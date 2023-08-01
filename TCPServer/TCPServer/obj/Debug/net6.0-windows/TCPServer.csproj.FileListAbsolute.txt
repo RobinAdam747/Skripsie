@@ -1,0 +1,17 @@
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\bin\Debug\net6.0-windows\TCPServer.exe
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\bin\Debug\net6.0-windows\TCPServer.deps.json
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\bin\Debug\net6.0-windows\TCPServer.runtimeconfig.json
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\bin\Debug\net6.0-windows\TCPServer.dll
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\bin\Debug\net6.0-windows\TCPServer.pdb
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.csproj.AssemblyReference.cache
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer..resources
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.csproj.GenerateResource.cache
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.AssemblyInfoInputs.cache
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.AssemblyInfo.cs
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.csproj.CoreCompileInputs.cache
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.dll
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\refint\TCPServer.dll
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.pdb
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\TCPServer.genruntimeconfig.cache
+C:\Users\adams\Documents\Skripsie\TCPServer\TCPServer\obj\Debug\net6.0-windows\ref\TCPServer.dll
