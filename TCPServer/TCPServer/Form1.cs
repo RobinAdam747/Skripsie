@@ -1,150 +1,139 @@
-using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 
 namespace TCPServer
 {
     public partial class Form1 : Form
     {
+        // Variables:
+        private TcpListener listener;   //listener to listen for connection requests and IPs
+        private bool isRunning = false; //boolean set when server is set to be up and running
+
         public Form1()
         {
-            InitializeComponents();
+            InitializeComponent();
         }
 
-        private void InitializeComponents()
+        private void UpdateStatus(string message)
         {
-            lblServer = new Label();
-            lstClientIP = new ListBox();
-            btnStart = new Button();
-            txtIP = new TextBox();
-            txtInfo = new TextBox();
-            txtMessage = new TextBox();
-            label2 = new Label();
-            btnSend = new Button();
-            lblClientIP = new Label();
-            SuspendLayout();
-            // 
-            // lblServer
-            // 
-            lblServer.AutoSize = true;
-            lblServer.Location = new Point(25, 45);
-            lblServer.Name = "lblServer";
-            lblServer.Size = new Size(53, 20);
-            lblServer.TabIndex = 0;
-            lblServer.Text = "Server:";
-            lblServer.Click += label1_Click;
-            // 
-            // lstClientIP
-            // 
-            lstClientIP.FormattingEnabled = true;
-            lstClientIP.ItemHeight = 20;
-            lstClientIP.Location = new Point(673, 81);
-            lstClientIP.Name = "lstClientIP";
-            lstClientIP.Size = new Size(382, 484);
-            lstClientIP.TabIndex = 1;
-            // 
-            // btnStart
-            // 
-            btnStart.Location = new Point(573, 536);
-            btnStart.Name = "btnStart";
-            btnStart.Size = new Size(94, 29);
-            btnStart.TabIndex = 2;
-            btnStart.Text = "Start";
-            btnStart.UseVisualStyleBackColor = true;
-            btnStart.Click += btnStart_Click;
-            // 
-            // txtIP
-            // 
-            txtIP.Location = new Point(99, 42);
-            txtIP.Name = "txtIP";
-            txtIP.Size = new Size(568, 27);
-            txtIP.TabIndex = 3;
-            // 
-            // txtInfo
-            // 
-            txtInfo.Location = new Point(99, 80);
-            txtInfo.Multiline = true;
-            txtInfo.Name = "txtInfo";
-            txtInfo.ReadOnly = true;
-            txtInfo.ScrollBars = ScrollBars.Both;
-            txtInfo.Size = new Size(568, 417);
-            txtInfo.TabIndex = 4;
-            // 
-            // txtMessage
-            // 
-            txtMessage.Location = new Point(111, 503);
-            txtMessage.Name = "txtMessage";
-            txtMessage.Size = new Size(556, 27);
-            txtMessage.TabIndex = 6;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(37, 506);
-            label2.Name = "label2";
-            label2.Size = new Size(70, 20);
-            label2.TabIndex = 5;
-            label2.Text = "Message:";
-            // 
-            // btnSend
-            // 
-            btnSend.Location = new Point(473, 536);
-            btnSend.Name = "btnSend";
-            btnSend.Size = new Size(94, 29);
-            btnSend.TabIndex = 7;
-            btnSend.Text = "Send";
-            btnSend.UseVisualStyleBackColor = true;
-            // 
-            // lblClientIP
-            // 
-            lblClientIP.AutoSize = true;
-            lblClientIP.Location = new Point(673, 57);
-            lblClientIP.Name = "lblClientIP";
-            lblClientIP.Size = new Size(66, 20);
-            lblClientIP.TabIndex = 8;
-            lblClientIP.Text = "Client IP:";
-            // 
-            // Form1
-            // 
-            ClientSize = new Size(1101, 599);
-            Controls.Add(lblClientIP);
-            Controls.Add(btnSend);
-            Controls.Add(txtMessage);
-            Controls.Add(label2);
-            Controls.Add(txtInfo);
-            Controls.Add(txtIP);
-            Controls.Add(btnStart);
-            Controls.Add(lstClientIP);
-            Controls.Add(lblServer);
-            MaximizeBox = false;
-            Name = "Form1";
-            StartPosition = FormStartPosition.CenterScreen;
-            Text = "TCP/IP Server";
-            ResumeLayout(false);
-            PerformLayout();
+            // This method is used to update the status textbox on the UI thread.
+            if (txtInfo.InvokeRequired)
+            {
+                txtInfo.Invoke((MethodInvoker)delegate
+                {
+                    txtInfo.AppendText(message + Environment.NewLine);
+                });
+            }
+            else
+            {
+                txtInfo.AppendText(message + Environment.NewLine);
+            }
         }
 
-        private Label lblServer;
-        private Button btnStart;
-        private TextBox txtIP;
-        private TextBox txtInfo;
-        private TextBox txtMessage;
-        private Label label2;
-        private Button btnSend;
-        private Label lblClientIP;
-        private ListBox lstClientIP;
 
-        private void label1_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
+            if (!isRunning)
+            {
+                try
+                {
+                    int port = 8080; // Choose a port number
 
+                    IPAddress ipAddress = IPAddress.Any;
+                    listener = new TcpListener(ipAddress, port);
+                    listener.Start();
+
+                    isRunning = true;
+                    UpdateStatus("Server started. Waiting for incoming connections...");
+
+                    // Start a new thread to listen for incoming client connections
+                    Thread serverThread = new Thread(ListenForClients);
+                    serverThread.Start();
+                }
+                catch (Exception ex)
+                {
+                    UpdateStatus("Error starting server: " + ex.Message);
+                }
+            }
         }
+
+        private void ListenForClients()
+        {
+            while (isRunning)
+            {
+                TcpClient client = listener.AcceptTcpClient();
+                UpdateStatus("Client connected: " + client.Client.RemoteEndPoint);
+
+                // Start a new thread to handle communication with the connected client
+                Thread clientThread = new Thread(() => HandleClientCommunication(client));
+                clientThread.Start();
+            }
+        }
+
+        private void HandleClientCommunication(TcpClient client)
+        {
+            try
+            {
+                NetworkStream stream = client.GetStream();
+                byte[] data = new byte[1024];
+
+                while (isRunning)
+                {
+                    int bytesRead = stream.Read(data, 0, data.Length);
+                    string message = Encoding.ASCII.GetString(data, 0, bytesRead);
+                    UpdateStatus("Received from client: " + message);
+
+                    // Process the received data or respond to the client as needed
+
+                    // For example, if you want to send a response back to the client:
+                    // string responseMessage = "Hello from server!";
+                    // byte[] responseData = Encoding.ASCII.GetBytes(responseMessage);
+                    // stream.Write(responseData, 0, responseData.Length);
+                }
+
+                stream.Close();
+                client.Close();
+                UpdateStatus("Client disconnected: " + client.Client.RemoteEndPoint);
+            }
+            catch (Exception ex)
+            {
+                UpdateStatus("Error handling client communication: " + ex.Message);
+            }
+        }
+
+        private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+                listener.Stop();
+            }
+        }
+
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+                listener.Stop();
+                UpdateStatus("Server stopped.");
+            }
+        }
+
+        /*private void StopButton_Click(object sender, EventArgs e)
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+                listener.Stop();
+                UpdateStatus("Server stopped.");
+            }
+        }*/
     }
 }
