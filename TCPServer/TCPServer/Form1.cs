@@ -7,8 +7,12 @@ namespace TCPServer
     public partial class Form1 : Form
     {
         // Variables:
-        private TcpListener listener;   //listener to listen for connection requests and IPs
+        //TcpListener listener;   //listener to listen for connection requests and IPs
+        static IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 7474);
+        //Socket listener = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+        Socket listener = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         private bool isRunning = false; //boolean set when server is set to be up and running
+
 
         public Form1()
         {
@@ -43,18 +47,22 @@ namespace TCPServer
             {
                 try
                 {
-                    int port = 8080; // Choose a port number
+                    //var ipAddress = IPAddress.Any;
+                    //int port = 7474;                  // Choose a port number
 
-                    IPAddress ipAddress = IPAddress.Any;
-                    listener = new TcpListener(ipAddress, port);
-                    listener.Start();
+                    //listener = new TcpListener(ipAddress, port);
+                    //listener.Start();
+
+                    listener.Bind(ipEndPoint);  // associates the socket with the network address
+                    listener.Listen(100);       // makes the listener listen for a bit
 
                     isRunning = true;
                     UpdateStatus("Server started. Waiting for incoming connections...");
 
                     // Start a new thread to listen for incoming client connections
-                    Thread serverThread = new Thread(ListenForClients);
-                    serverThread.Start();
+                    //Thread serverThread = new Thread(ListenForClients); //idk about this, defs ask
+                    //serverThread.Start();
+                    ListenForClients();
                 }
                 catch (Exception ex)
                 {
@@ -63,43 +71,63 @@ namespace TCPServer
             }
         }
 
-        private void ListenForClients()
+        private async void ListenForClients()
         {
             while (isRunning)
             {
-                TcpClient client = listener.AcceptTcpClient();
-                UpdateStatus("Client connected: " + client.Client.RemoteEndPoint);
+                //TcpClient client = listener.AcceptTcpClient();
+                //var handler = await listener.AcceptAsync();
+                var acceptedSocket = await listener.AcceptAsync();
+                UpdateStatus("Client connected: " + acceptedSocket.RemoteEndPoint);
 
                 // Start a new thread to handle communication with the connected client
-                Thread clientThread = new Thread(() => HandleClientCommunication(client));
-                clientThread.Start();
+                //Thread clientThread = new Thread(() => HandleClientCommunication(acceptedSocket));
+                //clientThread.Start();
+                HandleClientCommunication(acceptedSocket);
             }
         }
 
-        private void HandleClientCommunication(TcpClient client)
+        private async void HandleClientCommunication(Socket socket)
         {
             try
             {
-                NetworkStream stream = client.GetStream();
+                //var handler = await listener.AcceptAsync();
+
+                //NetworkStream stream = client.GetStream();
                 byte[] data = new byte[1024];
 
                 while (isRunning)
                 {
-                    int bytesRead = stream.Read(data, 0, data.Length);
+                    //int bytesRead = stream.Read(data, 0, data.Length);
+                    var bytesRead = await socket.ReceiveAsync(data, SocketFlags.None);
                     string message = Encoding.ASCII.GetString(data, 0, bytesRead);
                     UpdateStatus("Received from client: " + message);
 
-                    // Process the received data or respond to the client as needed
+                    var eom = "<|EOM|>";
+                    if (message.IndexOf(eom) > -1 /* is end of message */)
+                    {
+                        //Console.WriteLine($"Socket server received message: \"{message.Replace(eom, "")}\"");
+                        UpdateStatus($"Socket server received message: \"{message.Replace(eom, "")}\"");
 
-                    // For example, if you want to send a response back to the client:
-                    // string responseMessage = "Hello from server!";
-                    // byte[] responseData = Encoding.ASCII.GetBytes(responseMessage);
-                    // stream.Write(responseData, 0, responseData.Length);
+                        var ackMessage = "<|ACK|>";
+                        var echoBytes = Encoding.ASCII.GetBytes(ackMessage);
+                        await socket.SendAsync(echoBytes, 0);
+                        //Console.WriteLine($"Socket server sent acknowledgment: \"{ackMessage}\"");
+                        UpdateStatus($"Socket server sent acknowledgment: \"{ackMessage}\"");
+
+
+                        // Process the received data or respond to the client as needed
+
+                        // For example, if you want to send a response back to the client:
+                        // string responseMessage = "Hello from server!";
+                        // byte[] responseData = Encoding.ASCII.GetBytes(responseMessage);
+                        // stream.Write(responseData, 0, responseData.Length);
+                    }
                 }
-
-                stream.Close();
-                client.Close();
-                UpdateStatus("Client disconnected: " + client.Client.RemoteEndPoint);
+                //stream.Close();
+                //client.Close();
+                socket.Close();
+                UpdateStatus("Client disconnected: " + socket.RemoteEndPoint);
             }
             catch (Exception ex)
             {
@@ -112,7 +140,7 @@ namespace TCPServer
             if (isRunning)
             {
                 isRunning = false;
-                listener.Stop();
+                //listener.Stop();
             }
         }
 
@@ -121,19 +149,9 @@ namespace TCPServer
             if (isRunning)
             {
                 isRunning = false;
-                listener.Stop();
+                //listener.Stop();
                 UpdateStatus("Server stopped.");
             }
         }
-
-        /*private void StopButton_Click(object sender, EventArgs e)
-        {
-            if (isRunning)
-            {
-                isRunning = false;
-                listener.Stop();
-                UpdateStatus("Server stopped.");
-            }
-        }*/
     }
 }
