@@ -1,0 +1,15 @@
+C:\Users\adams\Documents\Skripsie\ClientTester\bin\Debug\net6.0\ClientTester.exe
+C:\Users\adams\Documents\Skripsie\ClientTester\bin\Debug\net6.0\ClientTester.deps.json
+C:\Users\adams\Documents\Skripsie\ClientTester\bin\Debug\net6.0\ClientTester.runtimeconfig.json
+C:\Users\adams\Documents\Skripsie\ClientTester\bin\Debug\net6.0\ClientTester.dll
+C:\Users\adams\Documents\Skripsie\ClientTester\bin\Debug\net6.0\ClientTester.pdb
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ClientTester.csproj.AssemblyReference.cache
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ClientTester.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ClientTester.AssemblyInfoInputs.cache
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ClientTester.AssemblyInfo.cs
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ClientTester.csproj.CoreCompileInputs.cache
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ClientTester.dll
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\refint\ClientTester.dll
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ClientTester.pdb
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ClientTester.genruntimeconfig.cache
+C:\Users\adams\Documents\Skripsie\ClientTester\obj\Debug\net6.0\ref\ClientTester.dll

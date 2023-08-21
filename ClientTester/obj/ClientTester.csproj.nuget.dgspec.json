@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\adams\\Desktop\\ClientTester\\ClientTester.csproj": {}
+    "C:\\Users\\adams\\Documents\\Skripsie\\ClientTester\\ClientTester.csproj": {}
   },
   "projects": {
-    "C:\\Users\\adams\\Desktop\\ClientTester\\ClientTester.csproj": {
+    "C:\\Users\\adams\\Documents\\Skripsie\\ClientTester\\ClientTester.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\adams\\Desktop\\ClientTester\\ClientTester.csproj",
+        "projectUniqueName": "C:\\Users\\adams\\Documents\\Skripsie\\ClientTester\\ClientTester.csproj",
         "projectName": "ClientTester",
-        "projectPath": "C:\\Users\\adams\\Desktop\\ClientTester\\ClientTester.csproj",
+        "projectPath": "C:\\Users\\adams\\Documents\\Skripsie\\ClientTester\\ClientTester.csproj",
         "packagesPath": "C:\\Users\\adams\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\adams\\Desktop\\ClientTester\\obj\\",
+        "outputPath": "C:\\Users\\adams\\Documents\\Skripsie\\ClientTester\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\adams\\AppData\\Roaming\\NuGet\\NuGet.Config",

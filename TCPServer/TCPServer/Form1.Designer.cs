@@ -74,7 +74,6 @@
             txtIP.Name = "txtIP";
             txtIP.Size = new Size(568, 27);
             txtIP.TabIndex = 3;
-            txtIP.Text = "146.232.65.147:7474";
             txtIP.TextChanged += txtIP_TextChanged;
             // 
             // txtInfo
