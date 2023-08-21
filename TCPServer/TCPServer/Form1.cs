@@ -47,8 +47,11 @@ namespace TCPServer
             {
                 try
                 {
-                    var ipAddress = IPAddress.Any;
+                    //IPAddress ipAddress = IPAddress("local address");
                     int port = 7474;                  // Choose a port number
+                    IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
+                    IPAddress ipAddress = ipHostInfo.AddressList[0];
+                    //IPEndPoint endPointHost = 
 
                     listener = new TcpListener(ipAddress, port);
                     listener.Start();

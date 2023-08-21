@@ -15,7 +15,7 @@ public class ARClient : MonoBehaviour
     private bool isConnected = false;
     //private bool messageOver = false;
     public TMP_Text textBox;
-    private string serverIP = "146.232.65.147";
+    //private string serverIP = "146.232.65.147";
     private int port = 7474;
 
     // Start is called before the first frame update
@@ -43,13 +43,18 @@ public class ARClient : MonoBehaviour
 
     private async void ConnectToServer()
     {
-        IPAddress iP = IPAddress.Parse(serverIP);
-        IPEndPoint ipEndPoint = new(iP, port);
+        IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
+        IPAddress ipAddress = ipHostInfo.AddressList[0];
+
+        //IPAddress iP = IPAddress.Parse(serverIP);
+        //IPEndPoint ipEndPoint = new(ipAddress, port);
+
+
 
         client = new TcpClient();
         //Socket client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
         //await client.ConnectAsync(serverIP, port);
-        await client.ConnectAsync(iP, port);
+        await client.ConnectAsync(ipAddress, port);
         /*
         // Send test message
         var message = "I am a client that has connected <|EOM|>";
