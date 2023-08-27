@@ -81,43 +81,47 @@ namespace TCPServer
         {
             while (isRunning)
             {
-                TcpClient acceptedClient = await listener.AcceptTcpClientAsync();
+                //TcpClient acceptedClient = await listener.AcceptTcpClientAsync();
                 //var handler = await listener.AcceptAsync();
-                //var acceptedSocket = await listener.AcceptAsync();
-                UpdateStatus("Client connected: " + acceptedClient.Client.RemoteEndPoint);
+                Socket acceptedSocket = await listener.AcceptSocketAsync();
+                UpdateStatus("Client connected: " + acceptedSocket.RemoteEndPoint);
 
-                lstClientIP.Text += acceptedClient.ToString() + "\n";
+                //lstClientIP.Text += acceptedSocket.RemoteEndPoint + "\n";
+                lstClientIP.Items.Add(acceptedSocket.RemoteEndPoint);
 
-                HandleClientCommunication(acceptedClient);
+                HandleClientCommunication(acceptedSocket);
             }
         }
 
-        private async void HandleClientCommunication(TcpClient client)
+        private async void HandleClientCommunication(Socket socket)
         {
             try
             {
                 //var handler = await listener.AcceptAsync();
 
-                NetworkStream stream = client.GetStream();
+                //NetworkStream stream = client.GetStream();
                 byte[] data = new byte[1024];
 
                 while (isRunning)
                 {
-                    int bytesRead = stream.Read(data, 0, data.Length);
-                    //var bytesRead = await socket.ReceiveAsync(data, SocketFlags.None);
+                    //int bytesRead = stream.Read(data, 0, data.Length);
+                    var bytesRead = await socket.ReceiveAsync(data, SocketFlags.None);
                     string messageReceived = Encoding.ASCII.GetString(data, 0, bytesRead);
                     UpdateStatus("Received from client: " + messageReceived);
 
+                    /*
                     var messageSent = txtMessage.Text + "\r\n";
                     var bytesWritten = Encoding.ASCII.GetBytes(messageSent);
-                    await stream.WriteAsync(bytesWritten);
+                    //await stream.WriteAsync(bytesWritten);
+                    await socket.SendAsync(bytesWritten, SocketFlags.None);
                     UpdateStatus("Sent to client: " + messageSent);
-                    /*
+                    */
+                    
                     var eom = "<|EOM|>";
-                    if (message.IndexOf(eom) > -1)  //is end of message
+                    if (messageReceived.IndexOf(eom) > -1)  //is end of message
                     {
                         //Console.WriteLine($"Socket server received message: \"{message.Replace(eom, "")}\"");
-                        UpdateStatus($"Socket server received message: \"{message.Replace(eom, "")}\"");
+                        UpdateStatus($"Socket server received message: \"{messageReceived.Replace(eom, "")}\"");
 
                         var ackMessage = "<|ACK|>";
                         var echoBytes = Encoding.ASCII.GetBytes(ackMessage);
@@ -133,12 +137,12 @@ namespace TCPServer
                         // byte[] responseData = Encoding.ASCII.GetBytes(responseMessage);
                         // stream.Write(responseData, 0, responseData.Length);
                     }
-                    */
+                    
                 }
-                stream.Close();
-                client.Close();
-                //socket.Close();
-                UpdateStatus("Client disconnected: " + client.Client.RemoteEndPoint);
+                //stream.Close();
+                //client.Close();
+                socket.Close();
+                UpdateStatus("Client disconnected: " + socket.RemoteEndPoint);
             }
             catch (Exception ex)
             {
