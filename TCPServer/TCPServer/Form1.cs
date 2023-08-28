@@ -1,9 +1,23 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.Json;
 
 namespace TCPServer
 {
+    public class MessagePayload
+    {
+        //include conversation ID, version #, source ID, destination ID, expiry date/time, request type
+        public int conversationID { get; set; }
+        public int versionNumber { get; set; }
+        public int sourceID { get; set; }
+        public int destinationID { get; set; }
+        public DateTimeOffset expiry { get; set; }  //maybe ask about this
+        public DateTime sendTime { get; set; }      //and this
+        public int requestType { get; set; }
+        public string? data { get; set; }   //depending on how I get it from control system, this may change
+    }
+
     public partial class Form1 : Form
     {
         // Variables:
@@ -130,7 +144,7 @@ namespace TCPServer
                         //Console.WriteLine($"Socket server sent acknowledgment: \"{ackMessage}\"");
                         UpdateStatus($"Socket server sent acknowledgment: \"{ackMessage}\"");
 
-                        isRunning = false;  //temporary fix...
+                        isRunning = false;  //temporary fix... (disconnecting after handshake)
 
 
                         // Process the received data or respond to the client as needed
@@ -179,10 +193,18 @@ namespace TCPServer
 
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
+        private void btnSend_Click(object sender, EventArgs e)  // Client tester button
         {
             //HandleClientCommunication()
             ConnectToServer();
+        }
+
+        private void InterpretJSONPayload(string jsonString)
+        {
+            MessagePayload? payload = new MessagePayload();
+            payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
+
+
         }
 
         //Testing the client in the same script:
