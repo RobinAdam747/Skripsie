@@ -10,13 +10,14 @@ using TMPro;    //include to interact with the TextMeshPro textbox
 public class ARClient : MonoBehaviour
 {
     // Variables:
-    private TcpClient client;
-    private NetworkStream stream;
+    //private TcpClient client;
+    //private NetworkStream stream;
     private bool isConnected = false;
     //private bool messageOver = false;
     public TMP_Text textBox;
     //private string serverIP = "146.232.65.147";
     private int port = 7474;
+    Socket client;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +28,7 @@ public class ARClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (isConnected && stream.DataAvailable)
         {
             byte[] dataBytes = new byte[1024];
@@ -39,45 +41,50 @@ public class ARClient : MonoBehaviour
 
             //messageOver = true;
         }
+        */
     }
 
     private async void ConnectToServer()
     {
-        IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
-        IPAddress ipAddress = ipHostInfo.AddressList[0];
+        //Get the local IP address of the laptop wherever you work
+        IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
+        IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
+        int portClient = 7474;
 
-        //IPAddress iP = IPAddress.Parse(serverIP);
-        //IPEndPoint ipEndPoint = new(ipAddress, port);
+        IPEndPoint ipEndPoint = new IPEndPoint(ipAddressClient, portClient);
 
+        client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
-
-        client = new TcpClient();
-        //Socket client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-        //await client.ConnectAsync(serverIP, port);
-        await client.ConnectAsync(ipAddress, port);
-        /*
-        // Send test message
-        var message = "I am a client that has connected <|EOM|>";
-        var messageBytes = Encoding.ASCII.GetBytes(message);
-        _ = await client.SendAsync(messageBytes, SocketFlags.None);
-        Debug.Log($"Socket client sent message: \"{message}\"");
-
-        // Receive acknoledgement
-        var buffer = new byte[1024];
-        var received = await client.ReceiveAsync(buffer, SocketFlags.None);
-        var response = Encoding.ASCII.GetString(buffer, 0, received);
-
-        if (response == "<|ACK|>")
-        {
-            Debug.Log($"Socket client received acknowledgment: \"{response}\"");
-        }
-        */
+        await client.ConnectAsync(ipAddressClient, portClient);
 
         isConnected = client.Connected;
-        if (isConnected)
+
+        while (isConnected)
         {
-            stream = client.GetStream();
+            // Send test message
+            var message = "I am a client that has connected <|EOM|>";
+            var messageBytes = Encoding.ASCII.GetBytes(message);
+            _ = await client.SendAsync(messageBytes, SocketFlags.None);
+            //Debug.Log($"Socket client sent message: \"{message}\"");
+            textBox.text = $"Socket client sent message: \"{message}\"\n";
+            //Console.WriteLine($"Socket client sent message: \"{message}\"");
+            //UpdateStatus($"Socket client sent message: \"{message}\"");
+
+            // Receive acknoledgement
+            var buffer = new byte[1024];
+            var received = await client.ReceiveAsync(buffer, SocketFlags.None);
+            var response = Encoding.ASCII.GetString(buffer, 0, received);
+
+            if (response == "<|ACK|>")
+            {
+                //Debug.Log($"Socket client received acknowledgment: \"{response}\"");
+                //Console.WriteLine($"Socket client received acknowledgment: \"{response}\"");
+                //UpdateStatus($"Socket client received acknowledgment: \"{response}\"");
+                textBox.text += $"Socket client received acknowledgment: \"{response}\"";
+                break;
+            }
         }
+
 
     }
 
@@ -85,9 +92,9 @@ public class ARClient : MonoBehaviour
     {
         if (isConnected)
         {
-            stream.Close();
-            client.Close();
-            //client.Shutdown(SocketShutdown.Both);
+            //stream.Close();
+            //client.Close();
+            client.Shutdown(SocketShutdown.Both);
             isConnected = false;
         }
     }

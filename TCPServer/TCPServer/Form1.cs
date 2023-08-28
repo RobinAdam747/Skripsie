@@ -29,11 +29,12 @@ namespace TCPServer
                 {
                     txtInfo.AppendText(message + Environment.NewLine);
                 });
-            }
+            }            
             else
             {
                 txtInfo.AppendText(message + Environment.NewLine);
             }
+            
         }
 
 
@@ -129,6 +130,8 @@ namespace TCPServer
                         //Console.WriteLine($"Socket server sent acknowledgment: \"{ackMessage}\"");
                         UpdateStatus($"Socket server sent acknowledgment: \"{ackMessage}\"");
 
+                        isRunning = false;  //temporary fix...
+
 
                         // Process the received data or respond to the client as needed
 
@@ -141,8 +144,10 @@ namespace TCPServer
                 }
                 //stream.Close();
                 //client.Close();
-                socket.Close();
+                //socket.Close();
+                socket.Shutdown(SocketShutdown.Both);
                 UpdateStatus("Client disconnected: " + socket.RemoteEndPoint);
+                lstClientIP.Items.Remove(socket.RemoteEndPoint);
             }
             catch (Exception ex)
             {
@@ -155,7 +160,7 @@ namespace TCPServer
             if (isRunning)
             {
                 isRunning = false;
-                //listener.Stop();
+                listener.Stop();
             }
         }
 
@@ -165,7 +170,7 @@ namespace TCPServer
             {
                 UpdateStatus("Server stopped.");
                 isRunning = false;
-                //listener.Stop();
+                listener.Stop();
             }
         }
 
@@ -196,7 +201,7 @@ namespace TCPServer
 
             isConnected = client.Connected;
 
-            while (true)
+            while (isConnected)
             {
                 // Send test message
                 var message = "I am a client that has connected <|EOM|>";
