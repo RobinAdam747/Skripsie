@@ -29,7 +29,7 @@ public class ARClient : MonoBehaviour
         btnDisconnect.onClick.AddListener(DisconnectButtonClick);
         btnUpdate.onClick.AddListener(UpdateButtonClick);
 
-        //Keep disconnect button disabled until connected
+        //Keep disconnect button hidden until connected
         btnDisconnect.gameObject.SetActive(false);
 
         //Show connect button
@@ -54,6 +54,9 @@ public class ARClient : MonoBehaviour
         }
         */
 
+        Camera camera = Camera.main;
+        transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
+
         if (!isConnected)
         {
             btnConnect.gameObject.SetActive(true);
@@ -68,20 +71,19 @@ public class ARClient : MonoBehaviour
 
     void ConnectButtonClick()
     {
-        if (gameObject.activeSelf) 
-        {
-            ConnectToServer();
-            Debug.Log("ButtonConnect clicked!");
 
-            /*
-            if (isConnected)
-            {
-                //Hide Connect button once pressed and successfully connected
-                btnConnect.gameObject.SetActive(false);
-            }
-            */
+        ConnectToServer();
+        Debug.Log("ButtonConnect clicked!");
+
+        /*
+        if (isConnected)
+        {
+            //Hide Connect button once pressed and successfully connected
+            btnConnect.gameObject.SetActive(false);
         }
-        
+        */
+
+
     }
 
     async void SendDisconnectMessage()
@@ -93,26 +95,24 @@ public class ARClient : MonoBehaviour
 
     void DisconnectButtonClick()
     {
-        if (gameObject.activeSelf)
+        if (isConnected)
         {
-            if (isConnected)
-            {
-                Debug.Log("ButtonDisconnect clicked!");
+            Debug.Log("ButtonDisconnect clicked!");
 
-                SendDisconnectMessage();
+            SendDisconnectMessage();
 
-                //stream.Close();
-                //client.Close();
-                client.Shutdown(SocketShutdown.Both);
-                isConnected = false;
+            //stream.Close();
+            //client.Close();
+            client.Shutdown(SocketShutdown.Both);
+            isConnected = false;
 
-                /*
-                //Hide the disconnect button and show the connect button
-                btnDisconnect.gameObject.SetActive(false);
-                btnConnect.gameObject.SetActive(true);
-                */
-            }
+            /*
+            //Hide the disconnect button and show the connect button
+            btnDisconnect.gameObject.SetActive(false);
+            btnConnect.gameObject.SetActive(true);
+            */
         }
+
     }
 
     void UpdateButtonClick()
@@ -125,7 +125,7 @@ public class ARClient : MonoBehaviour
         }
     }
 
-    private async void ConnectToServer()
+    async void ConnectToServer()
     {
         //Get the local IP address of the laptop wherever you work
         IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
@@ -134,11 +134,17 @@ public class ARClient : MonoBehaviour
 
         IPEndPoint ipEndPoint = new IPEndPoint(ipAddressClient, portClient);
 
+        //For debugging:
+        textBox.text = ipEndPoint.ToString() + " is local EndPoint";
+
         client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
         await client.ConnectAsync(ipAddressClient, portClient);
 
         isConnected = client.Connected;
+
+        //For debugging:
+        textBox.text = "Client connected to server";
 
         // Handshake:
         while (isConnected)
@@ -172,7 +178,7 @@ public class ARClient : MonoBehaviour
 
     }
 
-    private void OnApplicationQuit()
+    void OnApplicationQuit()
     {
         if (isConnected)
         {

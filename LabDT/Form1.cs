@@ -13,9 +13,9 @@ namespace LabDT
         //EndPoint? endPoint1;
         //DigitalTwinServer? dtServer = new();
 
-        TcpListener? listener = null;           //listener to listen for connection requests and IPs
-        private bool isRunning = false;         //boolean set when server is set to be up and running
-        private bool isClientConnected = false;   //flag for when a client is connected
+        TcpListener? listener = null;             //listener to listen for connection requests and IPs
+        private bool isRunning = false;           //boolean set when server is set to be up and running
+        private bool isClientConnected = false;   //boolean for when a client is connected
 
         public LabDT()
         {

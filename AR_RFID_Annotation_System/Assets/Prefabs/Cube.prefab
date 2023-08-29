@@ -171,23 +171,33 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
+      propertyPath: m_fontSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
+        type: 3}
       propertyPath: m_margin.w
-      value: -21.448967
+      value: 1.7906206
       objectReference: {fileID: 0}
     - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
       propertyPath: m_margin.x
-      value: -21.82056
+      value: 14.633482
       objectReference: {fileID: 0}
     - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
       propertyPath: m_margin.y
-      value: -23.07157
+      value: -0.28761673
       objectReference: {fileID: 0}
     - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
       propertyPath: m_margin.z
-      value: -21.40871
+      value: 13.67975
+      objectReference: {fileID: 0}
+    - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
@@ -237,12 +247,12 @@ PrefabInstance:
     - target: {fileID: 3295627894240681249, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 3295627894240681249, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3295627894240681249, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
@@ -287,7 +297,7 @@ PrefabInstance:
     - target: {fileID: 3295627894240681249, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5.29
+      value: 2.69
       objectReference: {fileID: 0}
     - target: {fileID: 3295627894240681249, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
@@ -308,6 +318,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CanvasPopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 6079552634919069681, guid: 53248159ae746e049b29d3e1aa32523d,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3380118721991385116, guid: 53248159ae746e049b29d3e1aa32523d, type: 3}
