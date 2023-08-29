@@ -6,23 +6,34 @@ using System.Text;
 using System.Net;
 using Unity.VisualScripting;
 using TMPro;    //include to interact with the TextMeshPro textbox
+using UnityEngine.UI;
 
 public class ARClient : MonoBehaviour
 {
     // Variables:
-    //private TcpClient client;
-    //private NetworkStream stream;
     private bool isConnected = false;
-    //private bool messageOver = false;
     public TMP_Text textBox;
-    //private string serverIP = "146.232.65.147";
+    public Button btnConnect;
+    public Button btnDisconnect;
+    public Button btnUpdate;
     private int port = 7474;
     Socket client;
 
     // Start is called before the first frame update
     void Start()
     {
-        ConnectToServer();
+        //ConnectToServer();
+
+        //Add listeners to listen for button clicks and activate the relative functions
+        btnConnect.onClick.AddListener(ConnectButtonClick);
+        btnDisconnect.onClick.AddListener(DisconnectButtonClick);
+        btnUpdate.onClick.AddListener(UpdateButtonClick);
+
+        //Keep disconnect button disabled until connected
+        btnDisconnect.gameObject.SetActive(false);
+
+        //Show connect button
+        btnConnect.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -42,6 +53,76 @@ public class ARClient : MonoBehaviour
             //messageOver = true;
         }
         */
+
+        if (!isConnected)
+        {
+            btnConnect.gameObject.SetActive(true);
+            btnDisconnect.gameObject.SetActive(false);
+        }
+        else
+        {
+            btnConnect.gameObject.SetActive(false);
+            btnDisconnect.gameObject.SetActive(true);
+        }
+    }
+
+    void ConnectButtonClick()
+    {
+        if (gameObject.activeSelf) 
+        {
+            ConnectToServer();
+            Debug.Log("ButtonConnect clicked!");
+
+            /*
+            if (isConnected)
+            {
+                //Hide Connect button once pressed and successfully connected
+                btnConnect.gameObject.SetActive(false);
+            }
+            */
+        }
+        
+    }
+
+    async void SendDisconnectMessage()
+    {
+        var disconnectMessage = "<|EOC|>";  //EOC: end of connection
+        var messageBytes = Encoding.ASCII.GetBytes(disconnectMessage);
+        _ = await client.SendAsync(messageBytes, SocketFlags.None);
+    }
+
+    void DisconnectButtonClick()
+    {
+        if (gameObject.activeSelf)
+        {
+            if (isConnected)
+            {
+                Debug.Log("ButtonDisconnect clicked!");
+
+                SendDisconnectMessage();
+
+                //stream.Close();
+                //client.Close();
+                client.Shutdown(SocketShutdown.Both);
+                isConnected = false;
+
+                /*
+                //Hide the disconnect button and show the connect button
+                btnDisconnect.gameObject.SetActive(false);
+                btnConnect.gameObject.SetActive(true);
+                */
+            }
+        }
+    }
+
+    void UpdateButtonClick()
+    {
+        Debug.Log("ButtonUpdate clicked!");
+
+        if (isConnected)
+        {
+            //send an update request?
+        }
     }
 
     private async void ConnectToServer()
@@ -59,6 +140,7 @@ public class ARClient : MonoBehaviour
 
         isConnected = client.Connected;
 
+        // Handshake:
         while (isConnected)
         {
             // Send test message
@@ -81,6 +163,8 @@ public class ARClient : MonoBehaviour
                 //Console.WriteLine($"Socket client received acknowledgment: \"{response}\"");
                 //UpdateStatus($"Socket client received acknowledgment: \"{response}\"");
                 textBox.text += $"Socket client received acknowledgment: \"{response}\"";
+                //Enable disconnect button once connected
+                //btnDisconnect.gameObject.SetActive(true);
                 break;
             }
         }
@@ -92,6 +176,8 @@ public class ARClient : MonoBehaviour
     {
         if (isConnected)
         {
+            SendDisconnectMessage();
+
             //stream.Close();
             //client.Close();
             client.Shutdown(SocketShutdown.Both);

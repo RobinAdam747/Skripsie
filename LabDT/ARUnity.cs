@@ -17,11 +17,11 @@ namespace ARUnity
         public string? expiry { get; set; }  
         public DateTime sendTime { get; set; }
         public string? requestType { get; set; }
-        public string? payload { get; set; }   //depending on how I get it from control system, this may change (json string?)
+        public string? payloadJSON { get; set; }   //depending on how I get it from control system, this may change (json string?)
 
         // Parameterised constructor:
         public MessagePayload(string conversationID_, int versionNumber_, string sourceID_, string destinationID_,
-            string expiry_, DateTime sendTime_, string requestType_, string payload_)
+            string expiry_, DateTime sendTime_, string requestType_, string payloadJSON_)
         {
 
         }
@@ -40,7 +40,7 @@ namespace ARUnity
                 expiry_:"5 minutes", 
                 sendTime_:DateTime.Now,
                 requestType_:"Unit Test",
-                payload_:"Unit Test Payload");
+                payloadJSON_:"Unit Test Payload");
 
             return unitTest;
         }
@@ -56,11 +56,11 @@ namespace ARUnity
                 expiry_:"",
                 sendTime_:DateTime.MinValue,
                 requestType_:"",
-                payload_:"");
+                payloadJSON_:"");
 
             payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
 
-
+            //logic to interpret deserialized JSON message
         }
     }
 
@@ -164,7 +164,7 @@ namespace ARUnity
                         //UpdateStatus($"Socket server sent acknowledgment: \"{ackMessage}\"");
                         statusMessage += $"\nSocket server sent acknowledgment: \"{ackMessage}\"";
 
-                        isRunning = false;  //temporary fix... (disconnecting after handshake)
+                        //isRunning = false;  //temporary fix... (disconnecting after handshake)
 
                     }
 

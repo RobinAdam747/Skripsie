@@ -118,12 +118,12 @@ GameObject:
   - component: {fileID: 2070867124022919027}
   - component: {fileID: 4138173478073259192}
   m_Layer: 5
-  m_Name: Button_3
+  m_Name: ButtonConnect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6598427334892651621
 RectTransform:
   m_ObjectHideFlags: 0
@@ -142,7 +142,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 26, y: 30}
+  m_AnchoredPosition: {x: 1045, y: 362}
   m_SizeDelta: {x: 209.52612, y: 112.965454}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &1461598398274856314
@@ -293,7 +293,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Connect
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -564,7 +564,7 @@ GameObject:
   - component: {fileID: 1349004924908205725}
   - component: {fileID: 942627301633815611}
   m_Layer: 5
-  m_Name: ButtonShowData
+  m_Name: ButtonUpdateView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -588,7 +588,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -26, y: 30}
+  m_AnchoredPosition: {x: -26, y: 200}
   m_SizeDelta: {x: 209.52612, y: 112.965454}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &7692791625953739828
@@ -739,7 +739,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Disconnect
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -821,12 +821,12 @@ GameObject:
   - component: {fileID: 6677578565661898919}
   - component: {fileID: 3006767667419765642}
   m_Layer: 5
-  m_Name: Button_2
+  m_Name: ButtonDisconnect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &361776786494037703
 RectTransform:
   m_ObjectHideFlags: 0
@@ -845,7 +845,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -26, y: -97}
+  m_AnchoredPosition: {x: -26, y: -569}
   m_SizeDelta: {x: 209.52612, y: 112.9655}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &2204846110014511073
@@ -996,7 +996,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Show Data
+  m_text: Update View
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

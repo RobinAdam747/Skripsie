@@ -13,8 +13,9 @@ namespace LabDT
         //EndPoint? endPoint1;
         //DigitalTwinServer? dtServer = new();
 
-        TcpListener? listener = null;   //listener to listen for connection requests and IPs
-        private bool isRunning = false; //boolean set when server is set to be up and running
+        TcpListener? listener = null;           //listener to listen for connection requests and IPs
+        private bool isRunning = false;         //boolean set when server is set to be up and running
+        private bool isClientConnected = false;   //flag for when a client is connected
 
         public LabDT()
         {
@@ -79,6 +80,7 @@ namespace LabDT
                 UpdateStatus("Client connected: " + acceptedSocket.RemoteEndPoint);
 
                 lstClients.Items.Add(acceptedSocket.RemoteEndPoint);
+                isClientConnected = true;
 
                 HandleClientCommunication(acceptedSocket);
             }
@@ -92,7 +94,7 @@ namespace LabDT
             {
                 byte[] data = new byte[1024];
 
-                while (isRunning)
+                while (isRunning && isClientConnected)
                 {
                     var bytesRead = await socket.ReceiveAsync(data, SocketFlags.None);
                     string messageReceived = Encoding.ASCII.GetString(data, 0, bytesRead);
@@ -118,16 +120,22 @@ namespace LabDT
                         //Console.WriteLine($"Socket server sent acknowledgment: \"{ackMessage}\"");
                         UpdateStatus($"Socket server sent acknowledgment: \"{ackMessage}\"");
 
-                        isRunning = false;  //temporary fix... (disconnecting after handshake)
+                        //isRunning = false;  //temporary fix... (disconnecting after handshake)
+                    }
+
+                    if (messageReceived.Equals("<|EOC|>"))
+                    {
+                        isClientConnected = false;
+                        socket.Shutdown(SocketShutdown.Both);
+                        UpdateStatus("Client disconnected: " + socket.RemoteEndPoint);
+                        lstClients.Items.Remove(socket.RemoteEndPoint);
                     }
 
                 }
                 //stream.Close();
                 //client.Close();
                 //socket.Close();
-                socket.Shutdown(SocketShutdown.Both);
-                UpdateStatus("Client disconnected: " + socket.RemoteEndPoint);
-                lstClients.Items.Remove(socket.RemoteEndPoint);
+                
             }
             catch (Exception ex)
             {

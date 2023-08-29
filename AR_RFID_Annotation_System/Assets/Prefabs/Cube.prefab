@@ -159,6 +159,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textBox: {fileID: 4919974034667792494}
+  btnConnect: {fileID: 0}
+  btnDisconnect: {fileID: 0}
+  btnUpdate: {fileID: 0}
 --- !u!1001 &5648378774591522333
 PrefabInstance:
   m_ObjectHideFlags: 0
