@@ -7,6 +7,7 @@ using System.Net;
 using Unity.VisualScripting;
 using TMPro;    //include to interact with the TextMeshPro textbox
 using UnityEngine.UI;
+using System;
 
 public class ARClient : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class ARClient : MonoBehaviour
     public Button btnUpdate;
     private int port = 7474;
     Socket client;
+    public Canvas annotation;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +58,8 @@ public class ARClient : MonoBehaviour
 
         Camera camera = Camera.main;
         transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
-
+        //annotation.transform.LookAt(camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
+        
         if (!isConnected)
         {
             btnConnect.gameObject.SetActive(true);
@@ -127,10 +130,16 @@ public class ARClient : MonoBehaviour
 
     async void ConnectToServer()
     {
-        //Get the local IP address of the laptop wherever you work
-        IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
-        IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
+        //For testing on the same machine (local testing):
+        //IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
+        //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
+
+        //For tablet:
+        string ip = "146.232.65.147";
+        IPAddress ipAddressClient = IPAddress.Parse(ip);
+
         int portClient = 7474;
+        
 
         IPEndPoint ipEndPoint = new IPEndPoint(ipAddressClient, portClient);
 

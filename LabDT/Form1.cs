@@ -229,9 +229,16 @@ namespace LabDT
             {
                 try
                 {
+                    //For local testing:
+                    //IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
+                    //IPAddress ipAddress = ipHostInfo.AddressList[0];
+
+                    //For tablet:
+                    string ip = "0.0.0.0";
+                    //IPAddress ipAddress = IPAddress.Parse(ip);
+                    IPAddress ipAddress = IPAddress.Any;
+
                     int port = 7474;                  // Choose a port number
-                    IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
-                    IPAddress ipAddress = ipHostInfo.AddressList[0];
 
                     txtServerAddress.Text = ipAddress + ":7474";
 

@@ -86,11 +86,16 @@ namespace ARUnity
             {
                 try
                 {
-                    int port = 7474;                  // Choose a port number
-                    IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
-                    IPAddress ipAddress = ipHostInfo.AddressList[0];
+                    //For local testing:
+                    //IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
+                    //IPAddress ipAddress = ipHostInfo.AddressList[0];
 
-                    //txtServerAddress.Text = ipAddress.ToString() + "7474";
+                    //For tablet:
+                    string ip = "146.232.65.147";
+                    IPAddress ipAddress = IPAddress.Parse(ip);
+                    //txt.Text = ipAddress.ToString() + "7474";
+
+                    int port = 7474;                  // Choose a port number
 
                     listener = new TcpListener(ipAddress, port);
                     listener.Start();
