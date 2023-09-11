@@ -12,14 +12,14 @@ using System;
 public class ARClient : MonoBehaviour
 {
     // Variables:
+    public GameObject annotation;
     private bool isConnected = false;
     public TMP_Text textBox;
     public Button btnConnect;
     public Button btnDisconnect;
     public Button btnUpdate;
-    private int port = 7474;
+    //private int port = 7474;
     Socket client;
-    public Canvas annotation;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +41,11 @@ public class ARClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Find annotation
+        annotation = GameObject.FindGameObjectWithTag("modelObject");
+        var textBoxObject = GameObject.FindGameObjectWithTag("annotationText");
+        textBox = textBoxObject.GetComponent<TMPro.TextMeshProUGUI>();
+
         /*
         if (isConnected && stream.DataAvailable)
         {
@@ -56,10 +61,13 @@ public class ARClient : MonoBehaviour
         }
         */
 
+        //Buttons code:
+
+
         Camera camera = Camera.main;
-        transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
-        //annotation.transform.LookAt(camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
+        //annotation.transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
         
+
         if (!isConnected)
         {
             btnConnect.gameObject.SetActive(true);
@@ -77,6 +85,8 @@ public class ARClient : MonoBehaviour
 
         ConnectToServer();
         Debug.Log("ButtonConnect clicked!");
+
+        textBox.text = "ButtonConnect clicked!";
 
         /*
         if (isConnected)
@@ -135,7 +145,8 @@ public class ARClient : MonoBehaviour
         //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
 
         //For tablet:
-        string ip = "146.232.65.147";
+        //string ip = "10.66.178.188";
+        string ip = "192.168.1.37";
         IPAddress ipAddressClient = IPAddress.Parse(ip);
 
         int portClient = 7474;
