@@ -103,28 +103,14 @@ public class ARClient : MonoBehaviour
     {
         var disconnectMessage = "<|EOC|>";  //EOC: end of connection
         var messageBytes = Encoding.ASCII.GetBytes(disconnectMessage);
-        _ = await client.SendAsync(messageBytes, SocketFlags.None);
+        await client.SendAsync(messageBytes, SocketFlags.None);
     }
 
     void DisconnectButtonClick()
     {
-        if (isConnected)
-        {
-            Debug.Log("ButtonDisconnect clicked!");
+        //Debug.Log("ButtonDisconnect clicked!");
 
-            SendDisconnectMessage();
-
-            //stream.Close();
-            //client.Close();
-            client.Shutdown(SocketShutdown.Both);
-            isConnected = false;
-
-            /*
-            //Hide the disconnect button and show the connect button
-            btnDisconnect.gameObject.SetActive(false);
-            btnConnect.gameObject.SetActive(true);
-            */
-        }
+        DisconnectFromServer();
 
     }
 
@@ -172,7 +158,7 @@ public class ARClient : MonoBehaviour
             // Send test message
             var message = "I am a client that has connected <|EOM|>";
             var messageBytes = Encoding.ASCII.GetBytes(message);
-            _ = await client.SendAsync(messageBytes, SocketFlags.None);
+            await client.SendAsync(messageBytes, SocketFlags.None);
             //Debug.Log($"Socket client sent message: \"{message}\"");
             textBox.text = $"Socket client sent message: \"{message}\"\n";
             //Console.WriteLine($"Socket client sent message: \"{message}\"");
@@ -198,16 +184,21 @@ public class ARClient : MonoBehaviour
 
     }
 
-    void OnApplicationQuit()
+    void DisconnectFromServer()
     {
         if (isConnected)
         {
             SendDisconnectMessage();
 
-            //stream.Close();
-            //client.Close();
-            client.Shutdown(SocketShutdown.Both);
+            //client.Shutdown(SocketShutdown.Both);
             isConnected = false;
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        DisconnectFromServer();
+        //client.Shutdown(SocketShutdown.Both);
+        //isConnected = false;
     }
 }
