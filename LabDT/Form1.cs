@@ -2,7 +2,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text.Json;
 using System.Text;
-using ARUnity;
+//using ARUnity;
 
 namespace LabDT
 {
@@ -22,7 +22,7 @@ namespace LabDT
             InitializeComponent();
         }
 
-        private void UpdateStatus(string message)
+        public void UpdateStatus(string message)
         {
             // This method is used to update the status textbox on the UI thread.
             if (txtInfo.InvokeRequired)

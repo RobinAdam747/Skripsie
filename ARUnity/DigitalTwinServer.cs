@@ -1,69 +1,10 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Net.Sockets;
+using System.Net;
 using System.Text;
-using System.Text.Json;
-
+//using LabDT;
 
 namespace ARUnity
 {
-    public class MessagePayload
-    {
-        // Variables (Attributes):
-        public string? conversationID { get; set; }
-        public int versionNumber { get; set; }
-        public string? sourceID { get; set; }
-        public string? destinationID { get; set; }
-        public string? expiry { get; set; }  
-        public DateTime sendTime { get; set; }
-        public string? requestType { get; set; }
-        public string? payloadJSON { get; set; }   //depending on how I get it from control system, this may change (json string?)
-
-        // Parameterised constructor:
-        public MessagePayload(string conversationID_, int versionNumber_, string sourceID_, string destinationID_,
-            string expiry_, DateTime sendTime_, string requestType_, string payloadJSON_)
-        {
-
-        }
-
-
-        // Methods:
-
-        // Unit Test:
-        public static MessagePayload UnitTest()
-        {
-            MessagePayload unitTest = new MessagePayload(
-                conversationID_:"Unit Test Conversation",
-                versionNumber_:1,
-                sourceID_:"Digital Twin",
-                destinationID_:"Tablet",
-                expiry_:"5 minutes", 
-                sendTime_:DateTime.Now,
-                requestType_:"Unit Test",
-                payloadJSON_:"Unit Test Payload");
-
-            return unitTest;
-        }
-
-        // Interpreting standard JSON string:
-        public void InterpretJSONString(string jsonString)
-        {
-            MessagePayload? payload = new MessagePayload(
-                conversationID_: "",
-                versionNumber_:0,
-                sourceID_:"",
-                destinationID_:"",
-                expiry_:"",
-                sendTime_:DateTime.MinValue,
-                requestType_:"",
-                payloadJSON_:"");
-
-            payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
-
-            //logic to interpret deserialized JSON message
-        }
-    }
-
     public class DigitalTwinServer
     {
         // Variables (Attributes):
@@ -72,20 +13,35 @@ namespace ARUnity
         public string? statusMessage { get; set; }              //string to return the status message to the info text box
         public EndPoint? acceptedSocketEndPoint { get; set; }   //endpoint of the accepted client to be added to the client list
 
-        public DigitalTwinServer(bool isRunning_, TcpListener listener_, 
-            string statusMessage_, EndPoint acceptedSocketEndPoint_) 
+        /// <summary>
+        /// Parameterised constructor
+        /// </summary>
+        /// <param name="isRunning_"></param>
+        /// <param name="listener_"></param>
+        /// <param name="statusMessage_"></param>
+        /// <param name="acceptedSocketEndPoint_"></param>
+        public DigitalTwinServer(bool isRunning_, TcpListener listener_,
+            string statusMessage_, EndPoint acceptedSocketEndPoint_)
         {
 
         }
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public DigitalTwinServer() { }
 
-        public void StartServer() 
+        /// <summary>
+        /// StartServer: enables the listener to await TCP/IP connections.
+        /// </summary>
+        public void StartServer()
         {
             if (!isRunning)
             {
                 try
                 {
+                    //LabDT labDT = new LabDT();
+
                     //For local testing:
                     //IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
                     //IPAddress ipAddress = ipHostInfo.AddressList[0];
@@ -101,10 +57,10 @@ namespace ARUnity
                     listener.Start();
 
                     isRunning = true;
-                    //UpdateStatus("Server started. Waiting for incoming connections...");
+                    UpdateStatus("Server started. Waiting for incoming connections...");
                     statusMessage = "Server started. Waiting for incoming connections...";
 
-                   
+
                     ListenForClients();
                 }
                 catch (Exception ex)
@@ -115,6 +71,10 @@ namespace ARUnity
             }
         }
 
+        /// <summary>
+        /// ListenForClients: allows the listener to asynchronous accept socket connections
+        /// and calls the communication handling method.
+        /// </summary>
         public async void ListenForClients()
         {
             while (isRunning)
@@ -130,6 +90,12 @@ namespace ARUnity
             }
         }
 
+        /// <summary>
+        /// HandleClientCommunication: 
+        /// once a client is connected, a simple handshake is initiated.
+        /// The connection is also terminated upon receiving the necessary code.
+        /// </summary>
+        /// <param name="socket"></param>
         public async void HandleClientCommunication(Socket socket)
         {
             try
@@ -192,7 +158,7 @@ namespace ARUnity
 
         public void CloseAll()
         {
-            if (isRunning) 
+            if (isRunning)
             {
                 statusMessage = "Server stopped.";
                 isRunning = false;
@@ -200,24 +166,4 @@ namespace ARUnity
             }
         }
     }
-
-    public class ExampleClient
-    {
-        // Variables (Attributes):
-        private bool isConnected = false;
-
-        public ExampleClient()
-        {
-        
-        }
-    }
-
-    //Todo:
-
-    //put the code from the form here
-    //include unit tests as well
-
-    //throw NotImplementedException ("what this code should do")
-        
-
 }

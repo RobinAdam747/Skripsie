@@ -7,14 +7,27 @@
   "targets": {
     ".NETCoreApp,Version=v6.0": {
       "LabDT/1.0.0": {
+        "dependencies": {
+          "ARUnity": "1.0.0"
+        },
         "runtime": {
           "LabDT.dll": {}
+        }
+      },
+      "ARUnity/1.0.0": {
+        "runtime": {
+          "ARUnity.dll": {}
         }
       }
     }
   },
   "libraries": {
     "LabDT/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "ARUnity/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
