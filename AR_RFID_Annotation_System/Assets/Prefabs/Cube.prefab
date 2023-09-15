@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 9144643009888657175}
   - component: {fileID: 9144643009888657172}
   - component: {fileID: 9144643009888657173}
-  - component: {fileID: 6039355458486583925}
+  - component: {fileID: 4107887252602774743}
   m_Layer: 0
   m_Name: CubeMesh
   m_TagString: modelObject
@@ -146,23 +146,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotateSpeed: 4
   objectRotation: {x: 4, y: 5, z: 1}
---- !u!114 &6039355458486583925
+--- !u!114 &4107887252602774743
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9144643009888657170}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c127cebe906033448c2eca46ff60cba, type: 3}
+  m_Script: {fileID: 11500000, guid: c7e730941f5e9b74b8fec87331248a8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  annotation: {fileID: 3418085602998154789}
-  textBox: {fileID: 4919974034667792494}
-  btnConnect: {fileID: 0}
-  btnDisconnect: {fileID: 0}
-  btnUpdate: {fileID: 0}
 --- !u!1001 &5648378774591522333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -333,24 +328,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 3380118721991385116, guid: 53248159ae746e049b29d3e1aa32523d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 53248159ae746e049b29d3e1aa32523d, type: 3}
---- !u!223 &3418085602998154789 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 6993078871179833400, guid: 53248159ae746e049b29d3e1aa32523d,
-    type: 3}
-  m_PrefabInstance: {fileID: 5648378774591522333}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4919974034667792494 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
-    type: 3}
-  m_PrefabInstance: {fileID: 5648378774591522333}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &7196609862551722812 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3295627894240681249, guid: 53248159ae746e049b29d3e1aa32523d,

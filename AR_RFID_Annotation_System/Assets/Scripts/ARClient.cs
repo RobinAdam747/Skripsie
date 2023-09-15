@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 using TMPro;    //include to interact with the TextMeshPro textbox
 using UnityEngine.UI;
 using System;
+using UnityEngine.XR.ARFoundation;
 
 public class ARClient : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class ARClient : MonoBehaviour
     public Button btnUpdate;
     //private int port = 7474;
     Socket client;
+    ARTrackedImageManager imageManager;
+    ARTrackedImage scannedMarker;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +34,9 @@ public class ARClient : MonoBehaviour
         btnDisconnect.onClick.AddListener(DisconnectButtonClick);
         btnUpdate.onClick.AddListener(UpdateButtonClick);
 
-        //Keep disconnect button hidden until connected
+        //Keep disconnect and update buttons hidden until connected
         btnDisconnect.gameObject.SetActive(false);
+        btnUpdate.gameObject.SetActive(false);
 
         //Show connect button
         btnConnect.gameObject.SetActive(true);
@@ -43,60 +47,43 @@ public class ARClient : MonoBehaviour
     {
         //Find annotation
         annotation = GameObject.FindGameObjectWithTag("modelObject");
-        var textBoxObject = GameObject.FindGameObjectWithTag("annotationText");
+        GameObject textBoxObject = GameObject.FindGameObjectWithTag("annotationText");
         textBox = textBoxObject.GetComponent<TMPro.TextMeshProUGUI>();
-
-        /*
-        if (isConnected && stream.DataAvailable)
-        {
-            byte[] dataBytes = new byte[1024];
-            int bytesRead = stream.Read(dataBytes, 0, dataBytes.Length);
-            //int 
-            string data = Encoding.ASCII.GetString(dataBytes, 0, bytesRead);
-
-            //ProcessReceivedData(data) // Implement this method to parse and process the data received from the server
-            textBox.text = data;
-
-            //messageOver = true;
-        }
-        */
-
-        //Buttons code:
-
-
-        Camera camera = Camera.main;
-        //annotation.transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
         
 
-        if (!isConnected)
+        //Make sure annotation always faces user:
+        //Camera camera = Camera.main;
+        //annotation.transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
+
+        //Buttons code:
+        //If the annotation game object has spawned, then activate the buttons:
+        if (annotation.activeSelf)
         {
-            btnConnect.gameObject.SetActive(true);
-            btnDisconnect.gameObject.SetActive(false);
+            //If the client is not connected, display the connect button:
+            if (!isConnected)
+            {
+                btnConnect.gameObject.SetActive(true);
+                btnDisconnect.gameObject.SetActive(false);
+                btnUpdate.gameObject.SetActive(false);
+            }
+            //otherwise display the update and disconnect buttons:
+            else
+            {
+                btnConnect.gameObject.SetActive(false);
+                btnDisconnect.gameObject.SetActive(true);
+                btnUpdate.gameObject.SetActive(true);
+            }
         }
-        else
-        {
-            btnConnect.gameObject.SetActive(false);
-            btnDisconnect.gameObject.SetActive(true);
-        }
+        
     }
 
     void ConnectButtonClick()
     {
 
         ConnectToServer();
-        Debug.Log("ButtonConnect clicked!");
+        //Debug.Log("ButtonConnect clicked!");
 
-        textBox.text = "ButtonConnect clicked!";
-
-        /*
-        if (isConnected)
-        {
-            //Hide Connect button once pressed and successfully connected
-            btnConnect.gameObject.SetActive(false);
-        }
-        */
-
-
+        //textBox.text = "ButtonConnect clicked!";
     }
 
     async void SendDisconnectMessage()
@@ -111,16 +98,41 @@ public class ARClient : MonoBehaviour
         //Debug.Log("ButtonDisconnect clicked!");
 
         DisconnectFromServer();
-
     }
 
     void UpdateButtonClick()
     {
-        Debug.Log("ButtonUpdate clicked!");
+        //Debug.Log("ButtonUpdate clicked!");
 
         if (isConnected)
         {
-            //send an update request?
+            //clear textbox:
+            textBox.text = "";
+
+            //For debugging: state which marker was scanned
+            scannedMarker = annotation.GetComponent<ARTrackedImage>();
+            //textBox.text = scannedMarker.referenceImage.ToString();
+
+            if (scannedMarker.referenceImage.name == "MarkerA")
+            {
+                textBox.text = "Marker A scanned";
+            }
+            else if (scannedMarker.referenceImage.name == "MarkerB")
+            {
+                textBox.text = "Marker B scanned";
+            }
+            else if (scannedMarker.referenceImage.name == "MarkerC")
+            {
+                textBox.text = "Marker C scanned";
+            }
+
+            //send an update request
+
+            //wait for a message back with JSON
+
+            //interpret JSON
+
+            //display correct info to text box
         }
     }
 
@@ -175,8 +187,6 @@ public class ARClient : MonoBehaviour
                 //Console.WriteLine($"Socket client received acknowledgment: \"{response}\"");
                 //UpdateStatus($"Socket client received acknowledgment: \"{response}\"");
                 textBox.text += $"Socket client received acknowledgment: \"{response}\"";
-                //Enable disconnect button once connected
-                //btnDisconnect.gameObject.SetActive(true);
                 break;
             }
         }
@@ -193,6 +203,11 @@ public class ARClient : MonoBehaviour
             //client.Shutdown(SocketShutdown.Both);
             isConnected = false;
         }
+    }
+
+    private void OnEnable()
+    {
+        //imageManager.trackedImagesChanged += OnTrackedImagesChanged;
     }
 
     void OnApplicationQuit()

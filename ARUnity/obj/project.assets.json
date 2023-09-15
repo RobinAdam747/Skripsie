@@ -1,33 +1,11 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {
-      "LabDT/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "compile": {
-          "bin/placeholder/LabDT.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/LabDT.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WindowsForms"
-        ]
-      }
-    }
+    "net6.0-windows7.0": {}
   },
-  "libraries": {
-    "LabDT/1.0.0": {
-      "type": "project",
-      "path": "../LabDT/LabDT.csproj",
-      "msbuildProject": "../LabDT/LabDT.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": [
-      "LabDT >= 1.0.0"
-    ]
+    "net6.0-windows7.0": []
   },
   "packageFolders": {
     "C:\\Users\\adams\\.nuget\\packages\\": {}
@@ -55,11 +33,7 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {
-            "C:\\Users\\adams\\Documents\\Skripsie\\LabDT\\LabDT.csproj": {
-              "projectPath": "C:\\Users\\adams\\Documents\\Skripsie\\LabDT\\LabDT.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {

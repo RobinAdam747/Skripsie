@@ -61,7 +61,7 @@ namespace ARUnity
 
         /// <summary>
         /// Interpreting standard JSON string:
-        /// Logic to interpret and decipher a recieved JSON.
+        /// Logic to interpret and decipher a received JSON.
         /// </summary>
         /// <param name="jsonString"></param>
         public void InterpretJSONString(string jsonString)
@@ -79,6 +79,71 @@ namespace ARUnity
             payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
 
             //logic to interpret deserialized JSON message
+            switch (payload?.requestType)
+            {
+                case "Unit Test":
+
+
+                    break;
+                case "Request Pallet IDs":
+                    //interact with code that receives pallet info from PLC
+
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="requestType"></param>
+        /// <returns> JSON string of the message payload </returns>
+        public string CreateJSONMessage(string requestType, string conversationID)
+        {
+            //Create the empty message payload
+            MessagePayload? payload = new MessagePayload(
+                conversationID_: "",
+                versionNumber_: 0,
+                sourceID_: "",
+                destinationID_: "",
+                expiry_: "",
+                sendTime_: DateTime.MinValue,
+                requestType_: "",
+                payloadJSON_: "");
+
+            //Logic to fill the parameters
+            //conversationID:
+
+            //versionNumber:
+
+            //sourceID:
+
+            //destinationID:
+
+            //expiry:
+
+            //sendTime:
+
+            //requestType:
+            switch (requestType)
+            {
+                case "Request Pallet IDs":
+                    payload.requestType = "Request Pallet IDs";
+                    break;
+
+                default:
+                    break;
+            }
+
+            //payloadJSON:
+
+
+            //Create the JSON
+            string jsonString = JsonSerializer.Serialize(payload);
+
+            return jsonString;
         }
     }
 

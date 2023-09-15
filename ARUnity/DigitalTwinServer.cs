@@ -10,8 +10,9 @@ namespace ARUnity
         // Variables (Attributes):
         public bool isRunning { get; set; }                     //boolean set when server is set to be up and running
         public TcpListener? listener { get; set; }              //listener to listen for connection requests and IPs
-        public string? statusMessage { get; set; }              //string to return the status message to the info text box
+        //public string? statusMessage { get; set; }              //string to return the status message to the info text box
         public EndPoint? acceptedSocketEndPoint { get; set; }   //endpoint of the accepted client to be added to the client list
+        public bool isClientConnected { get; set; }             //boolean for when a client is connected
 
         /// <summary>
         /// Parameterised constructor
@@ -32,138 +33,168 @@ namespace ARUnity
         public DigitalTwinServer() { }
 
         /// <summary>
-        /// StartServer: enables the listener to await TCP/IP connections.
+        /// Enables a listener to await TCP/IP connections.
         /// </summary>
-        public void StartServer()
+        /// <param name="textBox"></param>
+        /// <param name="clientsList"></param>
+        /// <param name="serverAddressTextBox"></param>
+        public void StartServer(System.Windows.Forms.TextBox textBox, System.Windows.Forms.ListBox clientsList, System.Windows.Forms.TextBox serverAddressTextBox)
         {
             if (!isRunning)
             {
                 try
                 {
-                    //LabDT labDT = new LabDT();
-
-                    //For local testing:
+                    //For local testing (listening on local host):
                     //IPHostEntry ipHostInfo = Dns.GetHostEntry("localhost");
                     //IPAddress ipAddress = ipHostInfo.AddressList[0];
 
                     //For tablet:
-                    string ip = "146.232.65.147";
+                    //(listening on the ip that they should speak on, check ipconfig each time location/wifi changes)
+                    //string ip = "10.66.178.188";
+                    string ip = "192.168.1.37";
                     IPAddress ipAddress = IPAddress.Parse(ip);
-                    //txt.Text = ipAddress.ToString() + "7474";
+                    //IPAddress ipAddress = IPAddress.Any;
 
                     int port = 7474;                  // Choose a port number
+
+                    serverAddressTextBox.Text = ipAddress + ":7474";
 
                     listener = new TcpListener(ipAddress, port);
                     listener.Start();
 
                     isRunning = true;
-                    UpdateStatus("Server started. Waiting for incoming connections...");
-                    statusMessage = "Server started. Waiting for incoming connections...";
+                    UpdateStatus("Server started. Waiting for incoming connections...", textBox);
 
-
-                    ListenForClients();
+                    // Listen for incoming client connections
+                    ListenForClients(textBox, clientsList);
                 }
                 catch (Exception ex)
                 {
-                    //UpdateStatus("Error starting server: " + ex.Message);
-                    statusMessage = "Error starting server: " + ex.Message;
+                    UpdateStatus("Error starting server: " + ex.Message, textBox);
                 }
             }
         }
 
         /// <summary>
-        /// ListenForClients: allows the listener to asynchronous accept socket connections
+        /// Allows the listener to asynchronous accept socket connections
         /// and calls the communication handling method.
         /// </summary>
-        public async void ListenForClients()
+        /// <param name="textBox"></param>
+        /// <param name="clientsList"></param>
+        public async void ListenForClients(System.Windows.Forms.TextBox textBox, System.Windows.Forms.ListBox clientsList)
         {
             while (isRunning)
             {
                 Socket acceptedSocket = await listener.AcceptSocketAsync();
-                //UpdateStatus("Client connected: " + acceptedSocket.RemoteEndPoint);
-                statusMessage += "Client connected: " + acceptedSocket.RemoteEndPoint;
+                UpdateStatus("Client connected: " + acceptedSocket.RemoteEndPoint, textBox);
+                //statusMessage += "Client connected: " + acceptedSocket.RemoteEndPoint;
 
-                //lstClients.Items.Add(acceptedSocket.RemoteEndPoint);
-                acceptedSocketEndPoint = acceptedSocket.RemoteEndPoint;
+                clientsList.Items.Add(acceptedSocket.RemoteEndPoint);
+                //acceptedSocketEndPoint = acceptedSocket.RemoteEndPoint;
+                isClientConnected = true;
 
-                HandleClientCommunication(acceptedSocket);
+                HandleClientCommunication(acceptedSocket, textBox, clientsList);
             }
         }
 
         /// <summary>
-        /// HandleClientCommunication: 
-        /// once a client is connected, a simple handshake is initiated.
+        /// Once a client is connected, a simple handshake is initiated.
         /// The connection is also terminated upon receiving the necessary code.
         /// </summary>
         /// <param name="socket"></param>
-        public async void HandleClientCommunication(Socket socket)
+        /// <param name="textBox"></param>
+        /// <param name="clientsList"></param>
+        public async void HandleClientCommunication(Socket socket, System.Windows.Forms.TextBox textBox, System.Windows.Forms.ListBox clientsList)
         {
             try
             {
-                //var handler = await listener.AcceptAsync();
-
-                //NetworkStream stream = client.GetStream();
                 byte[] data = new byte[1024];
 
-                while (isRunning)
+                while (isRunning && isClientConnected)
                 {
-                    //int bytesRead = stream.Read(data, 0, data.Length);
                     var bytesRead = await socket.ReceiveAsync(data, SocketFlags.None);
                     string messageReceived = Encoding.ASCII.GetString(data, 0, bytesRead);
-                    //UpdateStatus("Received from client: " + messageReceived);
-                    statusMessage = "Received from client: " + messageReceived;
-
-                    /*
-                    var messageSent = txtMessage.Text + "\r\n";
-                    var bytesWritten = Encoding.ASCII.GetBytes(messageSent);
-                    //await stream.WriteAsync(bytesWritten);
-                    await socket.SendAsync(bytesWritten, SocketFlags.None);
-                    UpdateStatus("Sent to client: " + messageSent);
-                    */
+                    UpdateStatus("Received from client: " + messageReceived, textBox);
 
                     var eom = "<|EOM|>";
-                    if (messageReceived.IndexOf(eom) > -1)  //is end of message
+                    if (messageReceived.IndexOf(eom) > -1)  //is at end of message
                     {
                         //Console.WriteLine($"Socket server received message: \"{message.Replace(eom, "")}\"");
-                        //UpdateStatus($"Socket server received message: \"{messageReceived.Replace(eom, "")}\"");
-                        statusMessage += $"\nSocket server received message: \"{messageReceived.Replace(eom, "")}\"";
+                        UpdateStatus($"Socket server received message: \"{messageReceived.Replace(eom, "")}\"", textBox);
 
                         var ackMessage = "<|ACK|>";
                         var echoBytes = Encoding.ASCII.GetBytes(ackMessage);
                         await socket.SendAsync(echoBytes, 0);
                         //Console.WriteLine($"Socket server sent acknowledgment: \"{ackMessage}\"");
-                        //UpdateStatus($"Socket server sent acknowledgment: \"{ackMessage}\"");
-                        statusMessage += $"\nSocket server sent acknowledgment: \"{ackMessage}\"";
+                        UpdateStatus($"Socket server sent acknowledgment: \"{ackMessage}\"", textBox);
 
                         //isRunning = false;  //temporary fix... (disconnecting after handshake)
+                    }
 
+                    if (messageReceived.Equals("<|EOC|>"))
+                    {
+                        isClientConnected = false;
+                        socket.Shutdown(SocketShutdown.Both);
+                        UpdateStatus("Client disconnected: " + socket.RemoteEndPoint, textBox);
+                        clientsList.Items.Remove(socket.RemoteEndPoint);
                     }
 
                 }
                 //stream.Close();
                 //client.Close();
                 //socket.Close();
-                socket.Shutdown(SocketShutdown.Both);
-                //UpdateStatus("Client disconnected: " + socket.RemoteEndPoint);
-                statusMessage += "\nClient disconnected: " + socket.RemoteEndPoint;
-                //lstClients.Items.Remove(socket.RemoteEndPoint);
-                acceptedSocketEndPoint = socket.RemoteEndPoint;
+
             }
             catch (Exception ex)
             {
-                //UpdateStatus("Error handling client communication: " + ex.Message);
-                statusMessage = "Error handling client communication: " + ex.Message;
+                UpdateStatus("Error handling client communication: " + ex.Message, textBox);
             }
         }
 
-        public void CloseAll()
+        /// <summary>
+        /// Closes the server connection by stopping the listener.
+        /// </summary>
+        /// <param name="textBox"></param>
+        public void CloseAll(System.Windows.Forms.TextBox textBox)
         {
             if (isRunning)
             {
-                statusMessage = "Server stopped.";
+                //statusMessage = "Server stopped.";
+                UpdateStatus("Server stopped.", textBox);
                 isRunning = false;
                 listener?.Stop();
             }
+        }
+
+        public void SendUnitTest()
+        {
+            throw new NotImplementedException("Unable to send the unit test just yet");
+
+            //MessagePayload unitTest = new MessagePayload();
+
+            //unitTest.
+        }
+
+        /// <summary>
+        /// Sends a message to a windows forms text box.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="textBox"></param>
+        public void UpdateStatus(string message, System.Windows.Forms.TextBox textBox)
+        {
+            // This method is used to update the status textbox on the UI thread.
+            if (textBox.InvokeRequired)
+            {
+                textBox.Invoke((MethodInvoker)delegate
+                {
+                    textBox.AppendText(message + Environment.NewLine);
+                });
+            }
+            else
+            {
+                textBox.AppendText(message + Environment.NewLine);
+            }
+
         }
     }
 }

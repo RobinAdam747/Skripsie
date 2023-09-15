@@ -1,11 +1,33 @@
 {
   "version": 3,
   "targets": {
-    "net6.0-windows7.0": {}
+    "net6.0-windows7.0": {
+      "ARUnity/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/ARUnity.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ARUnity.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.WindowsDesktop.App.WindowsForms"
+        ]
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "ARUnity/1.0.0": {
+      "type": "project",
+      "path": "../ARUnity/ARUnity.csproj",
+      "msbuildProject": "../ARUnity/ARUnity.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
-    "net6.0-windows7.0": []
+    "net6.0-windows7.0": [
+      "ARUnity >= 1.0.0"
+    ]
   },
   "packageFolders": {
     "C:\\Users\\adams\\.nuget\\packages\\": {}
@@ -33,7 +55,11 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\adams\\Documents\\Skripsie\\ARUnity\\ARUnity.csproj": {
+              "projectPath": "C:\\Users\\adams\\Documents\\Skripsie\\ARUnity\\ARUnity.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
