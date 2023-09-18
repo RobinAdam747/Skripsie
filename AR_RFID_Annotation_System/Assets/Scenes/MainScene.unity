@@ -635,7 +635,7 @@ GameObject:
   - component: {fileID: 534823277}
   m_Layer: 0
   m_Name: Scripts
-  m_TagString: Untagged
+  m_TagString: scriptObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -672,6 +672,7 @@ MonoBehaviour:
   btnConnect: {fileID: 684546576}
   btnDisconnect: {fileID: 149937095}
   btnUpdate: {fileID: 669175945}
+  scannedMarker: {fileID: 0}
 --- !u!114 &669175945 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 942627301633815611, guid: 398ee1c84048d68479a4ca31600e05d2,
@@ -707,6 +708,7 @@ GameObject:
   - component: {fileID: 1125729852}
   - component: {fileID: 1125729851}
   - component: {fileID: 1125729853}
+  - component: {fileID: 1125729854}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -760,6 +762,19 @@ MonoBehaviour:
   m_MaxNumberOfMovingImages: 0
   m_TrackedImagePrefab: {fileID: 3220816698483036671, guid: ec362ba7d4a04854aa6846fe12fe1195,
     type: 3}
+--- !u!114 &1125729854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125729850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d477a814fc44e58408b38eeead6fe1de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arClientScript: {fileID: 0}
 --- !u!1 &1167446570
 GameObject:
   m_ObjectHideFlags: 0

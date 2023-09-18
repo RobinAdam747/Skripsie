@@ -50,8 +50,8 @@ namespace ARUnity
 
                     //For tablet:
                     //(listening on the ip that they should speak on, check ipconfig each time location/wifi changes)
-                    //string ip = "10.66.178.188";
-                    string ip = "192.168.1.37";
+                    string ip = "10.73.117.194";
+                    //string ip = "192.168.1.37";
                     IPAddress ipAddress = IPAddress.Parse(ip);
                     //IPAddress ipAddress = IPAddress.Any;
 

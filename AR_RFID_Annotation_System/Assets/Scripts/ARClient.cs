@@ -10,6 +10,7 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.XR.ARFoundation;
 
+//[RequireComponent(typeof(ARTrackedImageManager))]
 public class ARClient : MonoBehaviour
 {
     // Variables:
@@ -21,8 +22,8 @@ public class ARClient : MonoBehaviour
     public Button btnUpdate;
     //private int port = 7474;
     Socket client;
-    ARTrackedImageManager imageManager;
-    ARTrackedImage scannedMarker;
+    //ARTrackedImageManager imageManager;
+    public ARTrackedImage scannedMarker;
 
     // Start is called before the first frame update
     void Start()
@@ -91,6 +92,8 @@ public class ARClient : MonoBehaviour
         var disconnectMessage = "<|EOC|>";  //EOC: end of connection
         var messageBytes = Encoding.ASCII.GetBytes(disconnectMessage);
         await client.SendAsync(messageBytes, SocketFlags.None);
+
+        textBox.text = "Disconnected";
     }
 
     void DisconnectButtonClick()
@@ -110,9 +113,10 @@ public class ARClient : MonoBehaviour
             textBox.text = "";
 
             //For debugging: state which marker was scanned
-            scannedMarker = annotation.GetComponent<ARTrackedImage>();
+            //scannedMarker = annotation.GetComponent<ARTrackedImage>();
             //textBox.text = scannedMarker.referenceImage.ToString();
 
+            //scannedMarker is set from a script attached to the AR Session Origin
             if (scannedMarker.referenceImage.name == "MarkerA")
             {
                 textBox.text = "Marker A scanned";
@@ -125,7 +129,7 @@ public class ARClient : MonoBehaviour
             {
                 textBox.text = "Marker C scanned";
             }
-
+            
             //send an update request
 
             //wait for a message back with JSON
@@ -143,8 +147,8 @@ public class ARClient : MonoBehaviour
         //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
 
         //For tablet:
-        //string ip = "10.66.178.188";
-        string ip = "192.168.1.37";
+        string ip = "10.73.117.194";
+        //string ip = "192.168.1.37";
         IPAddress ipAddressClient = IPAddress.Parse(ip);
 
         int portClient = 7474;
@@ -203,11 +207,6 @@ public class ARClient : MonoBehaviour
             //client.Shutdown(SocketShutdown.Both);
             isConnected = false;
         }
-    }
-
-    private void OnEnable()
-    {
-        //imageManager.trackedImagesChanged += OnTrackedImagesChanged;
     }
 
     void OnApplicationQuit()
