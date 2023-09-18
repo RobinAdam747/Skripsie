@@ -3,7 +3,6 @@ C:\Users\adams\Documents\Skripsie\LabDT\bin\Debug\net6.0-windows\LabDT.deps.json
 C:\Users\adams\Documents\Skripsie\LabDT\bin\Debug\net6.0-windows\LabDT.runtimeconfig.json
 C:\Users\adams\Documents\Skripsie\LabDT\bin\Debug\net6.0-windows\LabDT.dll
 C:\Users\adams\Documents\Skripsie\LabDT\bin\Debug\net6.0-windows\LabDT.pdb
-C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\LabDT.csproj.AssemblyReference.cache
 C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\LabDT.LabDT.resources
 C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\LabDT.csproj.GenerateResource.cache
 C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\LabDT.GeneratedMSBuildEditorConfig.editorconfig
@@ -15,6 +14,3 @@ C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\refint\LabDT.dl
 C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\LabDT.pdb
 C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\LabDT.genruntimeconfig.cache
 C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\ref\LabDT.dll
-C:\Users\adams\Documents\Skripsie\LabDT\bin\Debug\net6.0-windows\ARUnity.dll
-C:\Users\adams\Documents\Skripsie\LabDT\bin\Debug\net6.0-windows\ARUnity.pdb
-C:\Users\adams\Documents\Skripsie\LabDT\obj\Debug\net6.0-windows\LabDT.csproj.CopyComplete

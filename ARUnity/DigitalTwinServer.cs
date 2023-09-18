@@ -1,7 +1,8 @@
-﻿using System.Net.Sockets;
-using System.Net;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
-//using LabDT;
+using System.Net;
+using System.Net.Sockets;
 
 namespace ARUnity
 {
@@ -10,7 +11,6 @@ namespace ARUnity
         // Variables (Attributes):
         public bool isRunning { get; set; }                     //boolean set when server is set to be up and running
         public TcpListener? listener { get; set; }              //listener to listen for connection requests and IPs
-        //public string? statusMessage { get; set; }              //string to return the status message to the info text box
         public EndPoint? acceptedSocketEndPoint { get; set; }   //endpoint of the accepted client to be added to the client list
         public bool isClientConnected { get; set; }             //boolean for when a client is connected
 

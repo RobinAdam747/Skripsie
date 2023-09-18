@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ARUnity", "ARUnity.shproj", "{3D977CFD-B097-4889-9256-F3CDB47F6D20}"
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B9F64486-F57F-4366-967D-27C7F81C1FDB}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		ARUnity.projitems*{3d977cfd-b097-4889-9256-f3cdb47f6d20}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal
