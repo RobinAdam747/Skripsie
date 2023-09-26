@@ -715,6 +715,7 @@ GameObject:
   - component: {fileID: 1125729851}
   - component: {fileID: 1125729853}
   - component: {fileID: 1125729854}
+  - component: {fileID: 1125729855}
   m_Layer: 0
   m_Name: AR Session Origin
   m_TagString: Untagged
@@ -763,11 +764,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SerializedLibrary: {fileID: 11400000, guid: 79e8363263926794e9df129519f9f80f,
+  m_SerializedLibrary: {fileID: 11400000, guid: 7ec29b45dd6e0e74f884260de141750a,
     type: 2}
   m_MaxNumberOfMovingImages: 0
-  m_TrackedImagePrefab: {fileID: 3220816698483036671, guid: ec362ba7d4a04854aa6846fe12fe1195,
-    type: 3}
+  m_TrackedImagePrefab: {fileID: 0}
 --- !u!114 &1125729854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -781,6 +781,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arClientScript: {fileID: 0}
+--- !u!114 &1125729855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125729850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83038a3d424f23143a0e82309131064d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placeablePrefabs:
+  - {fileID: 5934319226856109830}
+  - {fileID: 4645311759735323614}
+  - {fileID: 7374488831407740539}
 --- !u!1 &1167446570
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,6 +931,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b096950269ad763419a8ce18a913726c, type: 3}
+--- !u!1 &4645311759735323614 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 432487910813307234, guid: a783a9a6041e6c245b733fd09544ffca,
+    type: 3}
+  m_PrefabInstance: {fileID: 5077798788817119932}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5077798788817119932
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1063,3 +1085,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f25584492384fb428928000c4da1d41, type: 3}
+--- !u!1 &5934319226856109830 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5707272177412640674, guid: b096950269ad763419a8ce18a913726c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2120810783052003492}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7374488831407740539 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3000130512420901404, guid: 4f25584492384fb428928000c4da1d41,
+    type: 3}
+  m_PrefabInstance: {fileID: 5761766709200176231}
+  m_PrefabAsset: {fileID: 0}

@@ -21,9 +21,29 @@ MonoBehaviour:
       m_GuidLow: 4919036225982490662
       m_GuidHigh: 17183241662360179852
     m_SerializedTextureGuid:
-      m_GuidLow: 0
-      m_GuidHigh: 0
+      m_GuidLow: 118296076340168862
+      m_GuidHigh: 17508099696231274041
     m_Size: {x: 0, y: 0}
     m_SpecifySize: 0
-    m_Name: 
+    m_Name: AnnotationA
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 5383995713311234100
+      m_GuidHigh: 1243794695899700621
+    m_SerializedTextureGuid:
+      m_GuidLow: 11814135849538119208
+      m_GuidHigh: 4062182093454272072
+    m_Size: {x: 0, y: 0}
+    m_SpecifySize: 0
+    m_Name: AnnotationB
+    m_Texture: {fileID: 0}
+  - m_SerializedGuid:
+      m_GuidLow: 4711590380629326375
+      m_GuidHigh: 9706479807324384190
+    m_SerializedTextureGuid:
+      m_GuidLow: 9728921827879532780
+      m_GuidHigh: 5748100900049905051
+    m_Size: {x: 0, y: 0}
+    m_SpecifySize: 0
+    m_Name: AnnotationC
     m_Texture: {fileID: 0}
