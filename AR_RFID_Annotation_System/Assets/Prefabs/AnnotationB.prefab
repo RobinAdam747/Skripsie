@@ -167,6 +167,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
         type: 3}
+      propertyPath: m_text
+      value: Annotation B
+      objectReference: {fileID: 0}
+    - target: {fileID: 730797829146455667, guid: 53248159ae746e049b29d3e1aa32523d,
+        type: 3}
       propertyPath: m_fontSize
       value: 5
       objectReference: {fileID: 0}

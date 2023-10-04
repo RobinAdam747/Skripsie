@@ -147,7 +147,7 @@ public class ARClient : MonoBehaviour
         //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
 
         //For tablet:
-        string ip = "10.73.117.194";
+        string ip = "10.66.178.171";
         //string ip = "192.168.1.37";
         IPAddress ipAddressClient = IPAddress.Parse(ip);
 

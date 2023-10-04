@@ -67,13 +67,13 @@ public class ImageTracking : MonoBehaviour
         prefab.SetActive(true);
 
         //Disable the other prefabs when we look at a new image (might not be applicable, may want them all visible)
-        //foreach (GameObject go in spawnedPrefabs.Values)
-        //{
-        //    if (go.name != name) 
-        //    {
-        //        go.SetActive(false);
-        //    }
-        //}
+        foreach (GameObject go in spawnedPrefabs.Values)
+        {
+            if (go.name != name) 
+            {
+                go.SetActive(false);
+            }
+        }
     }
 
     // Start is called before the first frame update
