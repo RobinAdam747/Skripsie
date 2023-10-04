@@ -41,7 +41,7 @@ namespace ARUnity
 
         /// <summary>
         /// Unit Test:
-        /// A unit test example JSON for testing the JSON deserializing and interpreting method/s and functionality
+        /// A unit test example JSON for testing the JSON deserializing and interpreting methods and functionality
         /// </summary>
         /// <returns> a MessagePayload type containing the deserialized data </returns>
         public static MessagePayload UnitTest()

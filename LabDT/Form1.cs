@@ -16,7 +16,7 @@ namespace LabDT
             InitializeComponent();
         }
 
-        
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -31,16 +31,16 @@ namespace LabDT
 
         private void ServerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            dtServer?.CloseAll(txtInfo);           
+            dtServer?.CloseAll(txtInfo);
         }
 
         private void btnStop_Click(object sender, EventArgs e)
         {
 
-        }      
+        }
 
-        
-               
+
+
 
         private void txtIP_TextChanged(object sender, EventArgs e)
         {
@@ -115,6 +115,11 @@ namespace LabDT
         {
 
             dtServer?.CloseAll(txtInfo);
+        }
+
+        private void btnUnitTest_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
