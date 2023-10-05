@@ -8,21 +8,17 @@ namespace ARUnity
     public class DigitalTwinServer
     {
         // Variables (Attributes):
-        public bool isRunning { get; set; }                     //boolean set when server is set to be up and running
-        public TcpListener? listener { get; set; }              //listener to listen for connection requests and IPs
-        //public string? statusMessage { get; set; }              //string to return the status message to the info text box
-        public EndPoint? acceptedSocketEndPoint { get; set; }   //endpoint of the accepted client to be added to the client list
-        public bool isClientConnected { get; set; }             //boolean for when a client is connected
+        private bool isRunning { get; set; }                     //boolean set when server is set to be up and running
+        private TcpListener? listener { get; set; }              //listener to listen for connection requests and IPs
+        private bool isClientConnected { get; set; }             //boolean for when a client is connected
 
         /// <summary>
         /// Parameterised constructor
         /// </summary>
         /// <param name="isRunning_"></param>
         /// <param name="listener_"></param>
-        /// <param name="statusMessage_"></param>
         /// <param name="acceptedSocketEndPoint_"></param>
-        public DigitalTwinServer(bool isRunning_, TcpListener listener_,
-            string statusMessage_, EndPoint acceptedSocketEndPoint_)
+        public DigitalTwinServer(bool isRunning_, TcpListener listener_, bool isClientConnected_)
         {
 
         }
@@ -38,7 +34,8 @@ namespace ARUnity
         /// <param name="textBox"></param>
         /// <param name="clientsList"></param>
         /// <param name="serverAddressTextBox"></param>
-        public void StartServer(System.Windows.Forms.TextBox textBox, System.Windows.Forms.ListBox clientsList, System.Windows.Forms.TextBox serverAddressTextBox)
+        public void StartServer(System.Windows.Forms.TextBox textBox, System.Windows.Forms.ListBox clientsList,
+            System.Windows.Forms.TextBox serverAddressTextBox)
         {
             if (!isRunning)
             {
@@ -104,7 +101,8 @@ namespace ARUnity
         /// <param name="socket"></param>
         /// <param name="textBox"></param>
         /// <param name="clientsList"></param>
-        public async void HandleClientCommunication(Socket socket, System.Windows.Forms.TextBox textBox, System.Windows.Forms.ListBox clientsList)
+        public async void HandleClientCommunication(Socket socket, System.Windows.Forms.TextBox textBox, 
+            System.Windows.Forms.ListBox clientsList)
         {
             try
             {
@@ -182,7 +180,7 @@ namespace ARUnity
         /// <param name="textBox"></param>
         public void UpdateStatus(string message, System.Windows.Forms.TextBox textBox)
         {
-            // This method is used to update the status textbox on the UI thread.
+            // This method is used to update the status/info textbox
             if (textBox.InvokeRequired)
             {
                 textBox.Invoke((MethodInvoker)delegate
