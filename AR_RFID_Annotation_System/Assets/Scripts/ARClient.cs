@@ -21,7 +21,7 @@ public class ARClient : MonoBehaviour
     public Button btnDisconnect;
     public Button btnUpdate;
     //private int port = 7474;
-    Socket client;
+    private Socket client;
     //ARTrackedImageManager imageManager;
     public ARTrackedImage scannedMarker;
 
@@ -147,8 +147,8 @@ public class ARClient : MonoBehaviour
         //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
 
         //For tablet:
-        string ip = "10.66.178.171";
-        //string ip = "192.168.1.37";
+        //string ip = "10.66.178.171";
+        string ip = "192.168.1.38";
         IPAddress ipAddressClient = IPAddress.Parse(ip);
 
         int portClient = 7474;
@@ -192,6 +192,10 @@ public class ARClient : MonoBehaviour
                 //UpdateStatus($"Socket client received acknowledgment: \"{response}\"");
                 textBox.text += $"Socket client received acknowledgment: \"{response}\"";
                 break;
+            }
+            else
+            {
+                textBox.text += "Socket client communication not yet established...";
             }
         }
 

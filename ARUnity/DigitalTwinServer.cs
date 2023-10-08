@@ -47,8 +47,8 @@ namespace ARUnity
 
                     //For tablet:
                     //(listening on the ip that they should speak on, check ipconfig each time location/wifi changes)
-                    string ip = "10.66.178.171";
-                    //string ip = "192.168.1.37";
+                    //string ip = "10.66.178.171";
+                    string ip = "192.168.1.38";
                     IPAddress ipAddress = IPAddress.Parse(ip);
                     //IPAddress ipAddress = IPAddress.Any;
 
@@ -128,13 +128,20 @@ namespace ARUnity
 
                         //isRunning = false;  //temporary fix... (disconnecting after handshake)
                     }
-
-                    if (messageReceived.Equals("<|EOC|>"))
+                    else if (messageReceived.Equals("<|EOC|>"))
                     {
                         isClientConnected = false;
                         socket.Shutdown(SocketShutdown.Both);
                         UpdateStatus("Client disconnected: " + socket.RemoteEndPoint, textBox);
                         clientsList.Items.Remove(socket.RemoteEndPoint);
+                    }
+                    else
+                    {
+                        isClientConnected = false;
+                        socket.Shutdown(SocketShutdown.Both);
+                        UpdateStatus("Client disconnected: " + socket.RemoteEndPoint, textBox);
+                        clientsList.Items.Remove(socket.RemoteEndPoint);
+                        break;
                     }
 
                 }
