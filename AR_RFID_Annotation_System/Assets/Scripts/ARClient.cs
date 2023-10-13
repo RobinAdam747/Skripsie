@@ -9,6 +9,8 @@ using TMPro;    //include to interact with the TextMeshPro textbox
 using UnityEngine.UI;
 using System;
 using UnityEngine.XR.ARFoundation;
+//using System.Text.Json;
+using ARUnity;
 
 //[RequireComponent(typeof(ARTrackedImageManager))]
 public class ARClient : MonoBehaviour
@@ -103,7 +105,7 @@ public class ARClient : MonoBehaviour
         DisconnectFromServer();
     }
 
-    void UpdateButtonClick()
+    async void UpdateButtonClick()
     {
         //Debug.Log("ButtonUpdate clicked!");
 
@@ -112,31 +114,30 @@ public class ARClient : MonoBehaviour
             //clear textbox:
             textBox.text = "";
 
-            //For debugging: state which marker was scanned
-            //scannedMarker = annotation.GetComponent<ARTrackedImage>();
-            //textBox.text = scannedMarker.referenceImage.ToString();
+            // Unit testing:
+            MessagePayload unitTest = MessagePayload.UnitTest();
+            string unitTestMessage = JsonUtility.ToJson(unitTest);
+            var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
+            await client.SendAsync(unitTestMessageBytes, SocketFlags.None);
 
-            //scannedMarker is set from a script attached to the AR Session Origin
-            if (scannedMarker.referenceImage.name == "MarkerA")
-            {
-                textBox.text = "Marker A scanned";
-            }
-            else if (scannedMarker.referenceImage.name == "MarkerB")
-            {
-                textBox.text = "Marker B scanned";
-            }
-            else if (scannedMarker.referenceImage.name == "MarkerC")
-            {
-                textBox.text = "Marker C scanned";
-            }
-            
             //send an update request
+            //MessagePayload updateRequest = new MessagePayload("Get RFID info", 1, "AR System", "Digital Twin", "5 minutes", DateTime.Now, "")
 
             //wait for a message back with JSON
+            var buffer = new byte[1024];
+            var received = await client.ReceiveAsync(buffer, SocketFlags.None);
+            var responseJSON = Encoding.ASCII.GetString(buffer, 0, received);
 
             //interpret JSON
+            MessagePayload response = JsonUtility.FromJson<MessagePayload>(responseJSON);
 
             //display correct info to text box
+            //For Unit Testing:
+            textBox.text = responseJSON;
+
+            //Normally:
+            //string outputToTextBox = response.payloadJSON;
+            //textBox.text = outputToTextBox;
         }
     }
 
@@ -147,8 +148,8 @@ public class ARClient : MonoBehaviour
         //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
 
         //For tablet:
-        //string ip = "10.66.178.171";
-        string ip = "192.168.1.38";
+        string ip = "10.66.178.171";
+        //string ip = "192.168.1.38";
         IPAddress ipAddressClient = IPAddress.Parse(ip);
 
         int portClient = 7474;
@@ -218,5 +219,41 @@ public class ARClient : MonoBehaviour
         DisconnectFromServer();
         //client.Shutdown(SocketShutdown.Both);
         //isConnected = false;
+    }
+
+    /// <summary>
+    /// Interpreting standard JSON string:
+    /// Logic to interpret and decipher a received JSON.
+    /// </summary>
+    /// <param name="jsonString"></param>
+    public void InterpretJSONString(string jsonString)
+    {
+        MessagePayload? payload = new MessagePayload(
+            conversationID_: "",
+            versionNumber_: 0,
+            sourceID_: "",
+            destinationID_: "",
+            expiry_: "",
+            sendTime_: DateTime.MinValue,
+            requestType_: "",
+            payloadJSON_: "");
+
+        payload = JsonUtility.FromJson<MessagePayload>(jsonString);
+
+        //logic to interpret deserialized JSON message
+        switch (payload?.requestType)
+        {
+            case "Unit Test":
+
+
+                break;
+            case "Request Pallet IDs":
+                //interact with code that receives pallet info from PLC
+
+                break;
+            default:
+                break;
+        }
+
     }
 }

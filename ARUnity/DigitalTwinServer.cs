@@ -1,6 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 //using LabDT;
 
 namespace ARUnity
@@ -47,8 +48,8 @@ namespace ARUnity
 
                     //For tablet:
                     //(listening on the ip that they should speak on, check ipconfig each time location/wifi changes)
-                    //string ip = "10.66.178.171";
-                    string ip = "192.168.1.38";
+                    string ip = "10.66.178.171";
+                    //string ip = "192.168.1.38";
                     IPAddress ipAddress = IPAddress.Parse(ip);
                     //IPAddress ipAddress = IPAddress.Any;
 
@@ -135,13 +136,17 @@ namespace ARUnity
                         UpdateStatus("Client disconnected: " + socket.RemoteEndPoint, textBox);
                         clientsList.Items.Remove(socket.RemoteEndPoint);
                     }
-                    else
+                    else if (messageReceived.Equals(""))
                     {
                         isClientConnected = false;
                         socket.Shutdown(SocketShutdown.Both);
                         UpdateStatus("Client disconnected: " + socket.RemoteEndPoint, textBox);
                         clientsList.Items.Remove(socket.RemoteEndPoint);
                         break;
+                    }
+                    else
+                    {
+                        InterpretJSONStringServerside(messageReceived, textBox, socket);
                     }
 
                 }
@@ -171,13 +176,28 @@ namespace ARUnity
             }
         }
 
-        public void SendUnitTest()
+        /// <summary>
+        /// Send a unit test message to a client.
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="textBox"></param>
+        public async void SendUnitTest(Socket socket, System.Windows.Forms.TextBox textBox)
         {
-            throw new NotImplementedException("Unable to send the unit test just yet");
+            //throw new NotImplementedException("Unable to send the unit test just yet");
+            //Create unit test message
+            MessagePayload unitTest =  MessagePayload.UnitTestReply();
 
-            //MessagePayload unitTest = new MessagePayload();
+            //Serialize for sending
+            string unitTestMessage = JsonSerializer.Serialize(unitTest);
 
-            //unitTest.
+            //Encode for sending
+            var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
+
+            //Send
+            await socket.SendAsync(unitTestMessageBytes, SocketFlags.None);
+
+            //Display sent message on screen
+            UpdateStatus("Message sent to " + unitTest.destinationID + " : " + unitTestMessage, textBox);
         }
 
         /// <summary>
@@ -200,6 +220,42 @@ namespace ARUnity
                 textBox.AppendText(message + Environment.NewLine);
             }
 
+        }
+
+        /// <summary>
+        /// Interpreting standard JSON string:
+        /// Logic to interpret and decipher a received JSON.
+        /// </summary>
+        /// <param name="jsonString"></param>
+        /// <param name="textBox"></param>
+        public void InterpretJSONStringServerside(string jsonString, System.Windows.Forms.TextBox textBox, Socket socket)
+        {
+            MessagePayload? payload = new MessagePayload(
+                conversationID_: "",
+                versionNumber_: 0,
+                sourceID_: "",
+                destinationID_: "",
+                expiry_: "",
+                sendTime_: DateTime.MinValue,
+                requestType_: "",
+                payloadJSON_: "");
+
+            payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
+
+            //logic to interpret deserialized JSON message
+            switch (payload?.requestType)
+            {
+                case "Unit Test":
+                    UpdateStatus(jsonString, textBox);
+                    SendUnitTest(socket, textBox);
+                    break;
+                case "Request Pallet IDs":
+                    //interact with code that receives pallet info from PLC
+
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
