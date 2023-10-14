@@ -119,7 +119,7 @@ namespace LabDT
 
         private void btnUnitTest_Click(object sender, EventArgs e)
         {
-            //dtServer?.SendUnitTest();
+            //dtServer?.SendUnitTest(dtServer, txtInfo);
         }
     }
 }

@@ -115,8 +115,12 @@ public class ARClient : MonoBehaviour
             textBox.text = "";
 
             // Unit testing:
-            MessagePayload unitTest = MessagePayload.UnitTest();
+            MessagePayload unitTest = new();
+            unitTest = unitTest.CreateUnitTest(unitTest);
             string unitTestMessage = JsonUtility.ToJson(unitTest);
+
+            textBox.text = unitTestMessage;
+
             var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
             await client.SendAsync(unitTestMessageBytes, SocketFlags.None);
 
@@ -124,12 +128,12 @@ public class ARClient : MonoBehaviour
             //MessagePayload updateRequest = new MessagePayload("Get RFID info", 1, "AR System", "Digital Twin", "5 minutes", DateTime.Now, "")
 
             //wait for a message back with JSON
-            var buffer = new byte[1024];
+            var buffer = new byte[1024 * 8];
             var received = await client.ReceiveAsync(buffer, SocketFlags.None);
             var responseJSON = Encoding.ASCII.GetString(buffer, 0, received);
 
             //interpret JSON
-            MessagePayload response = JsonUtility.FromJson<MessagePayload>(responseJSON);
+            //MessagePayload response = JsonUtility.FromJson<MessagePayload>(responseJSON);
 
             //display correct info to text box
             //For Unit Testing:
@@ -157,17 +161,20 @@ public class ARClient : MonoBehaviour
 
         IPEndPoint ipEndPoint = new IPEndPoint(ipAddressClient, portClient);
 
-        //For debugging:
-        textBox.text = ipEndPoint.ToString() + " is local EndPoint";
-
         client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+        //For debugging:
+        textBox.text = "Client created";
 
         await client.ConnectAsync(ipAddressClient, portClient);
 
         isConnected = client.Connected;
 
         //For debugging:
-        textBox.text = "Client connected to server";
+        if (isConnected  == false) 
+        {
+            textBox.text = "Connection error";
+        }
 
         // Handshake:
         while (isConnected)
@@ -234,7 +241,7 @@ public class ARClient : MonoBehaviour
             sourceID_: "",
             destinationID_: "",
             expiry_: "",
-            sendTime_: DateTime.MinValue,
+            sendTime_: DateTime.MinValue.ToString(),
             requestType_: "",
             payloadJSON_: "");
 

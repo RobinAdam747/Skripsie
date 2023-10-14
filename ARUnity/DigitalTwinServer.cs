@@ -185,7 +185,9 @@ namespace ARUnity
         {
             //throw new NotImplementedException("Unable to send the unit test just yet");
             //Create unit test message
-            MessagePayload unitTest =  MessagePayload.UnitTestReply();
+            MessagePayload unitTest = new ();
+
+            unitTest = unitTest.CreateUnitTestReply(unitTest);
 
             //Serialize for sending
             string unitTestMessage = JsonSerializer.Serialize(unitTest);
@@ -236,17 +238,17 @@ namespace ARUnity
                 sourceID_: "",
                 destinationID_: "",
                 expiry_: "",
-                sendTime_: DateTime.MinValue,
+                sendTime_: DateTime.MinValue.ToString(),
                 requestType_: "",
                 payloadJSON_: "");
 
-            payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
+            //payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
 
             //logic to interpret deserialized JSON message
             switch (payload?.requestType)
             {
                 case "Unit Test":
-                    UpdateStatus(jsonString, textBox);
+                    UpdateStatus(jsonString + "\n", textBox);
                     SendUnitTest(socket, textBox);
                     break;
                 case "Request Pallet IDs":

@@ -11,14 +11,14 @@ namespace ARUnity
     public class MessagePayload
     {
         // Variables (Attributes):
-        public string? conversationID { get; set; }
-        public int versionNumber { get; set; }
-        public string? sourceID { get; set; }
-        public string? destinationID { get; set; }
-        public string? expiry { get; set; }
-        public DateTime sendTime { get; set; }
-        public string? requestType { get; set; }
-        public string? payloadJSON { get; set; }   
+        public string? conversationID;
+        public int versionNumber;
+        public string? sourceID;
+        public string? destinationID;
+        public string? expiry;
+        public string? sendTime;
+        public string? requestType;
+        public string? payloadJSON;   
 
         /// <summary>
         /// Parameterised constructor
@@ -32,7 +32,12 @@ namespace ARUnity
         /// <param name="requestType_"></param>
         /// <param name="payloadJSON_"></param>
         public MessagePayload(string conversationID_, int versionNumber_, string sourceID_, string destinationID_,
-            string expiry_, DateTime sendTime_, string requestType_, string payloadJSON_)
+            string expiry_, string sendTime_, string requestType_, string payloadJSON_)
+        {
+
+        }
+
+        public MessagePayload()
         {
 
         }
@@ -45,7 +50,7 @@ namespace ARUnity
         /// A unit test example JSON for testing the JSON deserializing and interpreting methods and functionality
         /// </summary>
         /// <returns> a MessagePayload type containing the deserialized data </returns>
-        public static MessagePayload UnitTest()
+        public MessagePayload UnitTest()
         {
             MessagePayload unitTest = new MessagePayload(
                 conversationID_: "Unit Test Conversation",
@@ -53,22 +58,50 @@ namespace ARUnity
                 sourceID_: "AR System",
                 destinationID_: "Digital Twin",
                 expiry_: "5 minutes",
-                sendTime_: DateTime.Now,
+                sendTime_: DateTime.Now.ToString(),
                 requestType_: "Unit Test",
                 payloadJSON_: "Unit Test Payload");
 
             return unitTest;
         }
 
-        public static MessagePayload UnitTestReply()
+        public MessagePayload CreateUnitTest(MessagePayload unitTest)
+        {
+            unitTest.conversationID = "Unit Test Conversation";
+            unitTest.versionNumber = 1;
+            unitTest.sourceID = "AR System";
+            unitTest.destinationID = "Digital Twin";
+            unitTest.expiry = "5 minutes";
+            unitTest.sendTime = DateTime.Now.ToString();
+            unitTest.requestType = "Unit Test";
+            unitTest.payloadJSON = "Unit Test Payload";
+
+            return unitTest;
+        }
+
+        public MessagePayload CreateUnitTestReply(MessagePayload unitTestReply)
+        {
+            unitTestReply.conversationID = "Unit Test Conversation";
+            unitTestReply.versionNumber = 1;
+            unitTestReply.sourceID = "Digital Twin";
+            unitTestReply.destinationID = "AR System";
+            unitTestReply.expiry = "5 minutes";
+            unitTestReply.sendTime = DateTime.Now.ToString();
+            unitTestReply.requestType = "Unit Test";
+            unitTestReply.payloadJSON = "Unit Test Payload";
+
+            return unitTestReply;
+        }
+
+        public MessagePayload UnitTestReply()
         {
             MessagePayload unitTest = new MessagePayload(
                 conversationID_: "Unit Test Conversation",
                 versionNumber_: 1,
                 sourceID_: "Digital Twin",
-                destinationID_: "Tablet",
+                destinationID_: "AR System",
                 expiry_: "5 minutes",
-                sendTime_: DateTime.Now,
+                sendTime_: DateTime.Now.ToString(),
                 requestType_: "Unit Test",
                 payloadJSON_: "Unit Test Payload");
 
