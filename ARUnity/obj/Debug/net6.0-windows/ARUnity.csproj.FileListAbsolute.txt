@@ -9,3 +9,14 @@ C:\Users\adams\Documents\Skripsie\ARUnity\obj\Debug\net6.0-windows\ARUnity.dll
 C:\Users\adams\Documents\Skripsie\ARUnity\obj\Debug\net6.0-windows\refint\ARUnity.dll
 C:\Users\adams\Documents\Skripsie\ARUnity\obj\Debug\net6.0-windows\ARUnity.pdb
 C:\Users\adams\Documents\Skripsie\ARUnity\obj\Debug\net6.0-windows\ref\ARUnity.dll
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\bin\Debug\net6.0-windows\ARUnity.deps.json
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\bin\Debug\net6.0-windows\ARUnity.dll
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\bin\Debug\net6.0-windows\ARUnity.pdb
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\obj\Debug\net6.0-windows\ARUnity.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\obj\Debug\net6.0-windows\ARUnity.AssemblyInfoInputs.cache
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\obj\Debug\net6.0-windows\ARUnity.AssemblyInfo.cs
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\obj\Debug\net6.0-windows\ARUnity.csproj.CoreCompileInputs.cache
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\obj\Debug\net6.0-windows\ARUnity.dll
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\obj\Debug\net6.0-windows\refint\ARUnity.dll
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\obj\Debug\net6.0-windows\ARUnity.pdb
+C:\Users\23557702\Documents\GitHub\Skripsie\ARUnity\obj\Debug\net6.0-windows\ref\ARUnity.dll

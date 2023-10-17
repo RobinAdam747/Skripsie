@@ -22,9 +22,12 @@ namespace ClientTester2
         private async void ConnectToServer()
         {
             //Get the local IP address of the laptop wherever you work
-            IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
-            IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
-            int portClient = 7474;
+            //IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
+            //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
+
+            string ip = "10.66.178.171";
+            IPAddress ipAddressClient = IPAddress.Parse(ip);
+            int portClient = 59999;
 
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddressClient, portClient);
 

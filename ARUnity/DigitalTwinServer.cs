@@ -48,14 +48,15 @@ namespace ARUnity
 
                     //For tablet:
                     //(listening on the ip that they should speak on, check ipconfig each time location/wifi changes)
-                    string ip = "10.66.178.171";
-                    //string ip = "192.168.1.38";
+                    //string ip = "10.66.178.171";        //Eduroam laptop testing
+                    //string ip = "192.168.1.38";         //Home testing
+                    string ip = "146.232.145.241";      //VR lab computer
                     IPAddress ipAddress = IPAddress.Parse(ip);
                     //IPAddress ipAddress = IPAddress.Any;
 
-                    int port = 7474;                  // Choose a port number
+                    int port = 47474;                  // Choose a port number
 
-                    serverAddressTextBox.Text = ipAddress + ":7474";
+                    serverAddressTextBox.Text = ipAddress + ":" + port;
 
                     listener = new TcpListener(ipAddress, port);
                     listener.Start();
@@ -258,6 +259,53 @@ namespace ARUnity
                 default:
                     break;
             }
+        }
+
+        //Testing the client in the same script:
+        public async void ConnectToServer(System.Windows.Forms.TextBox textBox)
+        {
+            //Get the local IP address of the laptop wherever you work
+            //IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
+            //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
+
+            string ip = "146.232.146.236";      //VR lab computer
+            IPAddress ipAddress = IPAddress.Parse(ip);
+
+            int portClient = 47474;
+
+            IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, portClient);
+
+            Socket client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+            await client.ConnectAsync(ipAddress, portClient);
+
+            bool isConnected = client.Connected;
+
+            while (isConnected)
+            {
+                // Send test message
+                var message = "I am a client that has connected <|EOM|>";
+                var messageBytes = Encoding.ASCII.GetBytes(message);
+                _ = await client.SendAsync(messageBytes, SocketFlags.None);
+                //Debug.Log($"Socket client sent message: \"{message}\"");
+                //Console.WriteLine($"Socket client sent message: \"{message}\"");
+                UpdateStatus($"Socket client sent message: \"{message}\"", textBox);
+
+                // Receive acknoledgement
+                var buffer = new byte[1024];
+                var received = await client.ReceiveAsync(buffer, SocketFlags.None);
+                var response = Encoding.ASCII.GetString(buffer, 0, received);
+
+                if (response == "<|ACK|>")
+                {
+                    //Debug.Log($"Socket client received acknowledgment: \"{response}\"");
+                    //Console.WriteLine($"Socket client received acknowledgment: \"{response}\"");
+                    UpdateStatus($"Socket client received acknowledgment: \"{response}\"", textBox);
+                    break;
+                }
+            }
+
+
         }
     }
 }

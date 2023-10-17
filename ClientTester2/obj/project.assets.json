@@ -8,19 +8,19 @@
     "net6.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\adams\\.nuget\\packages\\": {}
+    "C:\\Users\\23557702\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\adams\\Documents\\Skripsie\\ClientTester2\\ClientTester2.csproj",
+      "projectUniqueName": "C:\\Users\\23557702\\Documents\\GitHub\\Skripsie\\ClientTester2\\ClientTester2.csproj",
       "projectName": "ClientTester2",
-      "projectPath": "C:\\Users\\adams\\Documents\\Skripsie\\ClientTester2\\ClientTester2.csproj",
-      "packagesPath": "C:\\Users\\adams\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\adams\\Documents\\Skripsie\\ClientTester2\\obj\\",
+      "projectPath": "C:\\Users\\23557702\\Documents\\GitHub\\Skripsie\\ClientTester2\\ClientTester2.csproj",
+      "packagesPath": "C:\\Users\\23557702\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\23557702\\Documents\\GitHub\\Skripsie\\ClientTester2\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\adams\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\23557702\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -64,7 +64,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
