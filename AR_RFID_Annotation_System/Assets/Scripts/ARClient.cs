@@ -121,16 +121,16 @@ public class ARClient : MonoBehaviour
             {
                 case 0:
                     // Unit testing:
-                    SendUnitTestMessage();
+                    SendAndReceiveUnitTestMessage();
 
                     break;
 
                 case 1:
-                    SendDigitalTwinMessage("Request RFID Data", "RFID Data Exchange", "Fetching RFID data...");
+                    SendandReceiveDigitalTwinMessage("Request RFID Data", "RFID Data Exchange", "Fetching RFID data...");
 
                     break;
                 case 2:
-                    SendDigitalTwinMessage("Integration Test", "Full System Integration Test"
+                    SendandReceiveDigitalTwinMessage("Integration Test", "Full System Integration Test"
                         , "Beginning full system integration test...");
                     break;                  
 
@@ -140,7 +140,7 @@ public class ARClient : MonoBehaviour
         }
     }
 
-    async void SendUnitTestMessage()
+    async void SendAndReceiveUnitTestMessage()
     {
 
         //Create unit test message
@@ -164,7 +164,7 @@ public class ARClient : MonoBehaviour
         textBox.text = responseJSONUnitTest;
     }
 
-    async void SendDigitalTwinMessage(string requestType, string conversationID, string progressUpdate)
+    async void SendandReceiveDigitalTwinMessage(string requestType, string conversationID, string progressUpdate)
     {
         //Create a message to request the RFID info
         MessagePayload messageToDT = new MessagePayload(conversationID_: conversationID, versionNumber_: 1, sourceID_: "AR System",
