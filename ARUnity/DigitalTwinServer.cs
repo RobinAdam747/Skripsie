@@ -230,6 +230,18 @@ namespace ARUnity
 
         }
 
+        public async void RequestDataFromPlc(string messageRequest, Socket socket, System.Windows.Forms.TextBox textBox)
+        {
+            //Encode message
+            var messageRequestEncoded = Encoding.UTF8.GetBytes(messageRequest);
+
+            //Send
+            await socket.SendAsync(messageRequestEncoded, SocketFlags.None);
+
+            //Display feedback on screen
+            UpdateStatus("Data from PLC requested", textBox);
+        }
+
         /// <summary>
         /// Sends a message to a windows forms text box.
         /// </summary>
@@ -270,11 +282,12 @@ namespace ARUnity
                     SendUnitTest(socket, textBox);
                     break;
                 case "Request RFID Data":
+                    RequestDataFromPlc("Request RFID data", socket, textBox);
                     SendMessageToARSystem(socket, textBox, "Request RFID Data", "RFID Data Exchange");                  
                     break;
                 case "Integration Test":
+                    RequestDataFromPlc("PLC Greeting", socket, textBox);
                     SendMessageToARSystem(socket, textBox, "Integration Test", "Full System Integration Test");
-
                     break;
                 default:
                     break;
