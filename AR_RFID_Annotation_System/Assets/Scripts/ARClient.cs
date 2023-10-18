@@ -115,7 +115,7 @@ public class ARClient : MonoBehaviour
             textBox.text = "";
 
             // Operation mode: 0 for unit testing, 1 for regular operation, 2 for full system integration test
-            int mode = 0;
+            int mode = 2;
 
             switch (mode)
             {
