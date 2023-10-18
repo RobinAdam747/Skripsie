@@ -114,34 +114,64 @@ public class ARClient : MonoBehaviour
             //clear textbox:
             textBox.text = "";
 
-            // Unit testing:
-            MessagePayload unitTest = new();
-            unitTest = unitTest.CreateUnitTest(unitTest);
-            string unitTestMessage = JsonUtility.ToJson(unitTest);
+            // Operation mode: 0 for unit testing, 1 for regular operation
+            int mode = 0;
 
-            textBox.text = unitTestMessage;
+            switch (mode)
+            {
+                case 0:
+                    // Unit testing:
 
-            var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
-            await client.SendAsync(unitTestMessageBytes, SocketFlags.None);
+                    //Create unit test message
+                    MessagePayload unitTest = new();
+                    unitTest = unitTest.CreateUnitTest(unitTest);
+                    string unitTestMessage = JsonUtility.ToJson(unitTest);
 
-            //send an update request
-            //MessagePayload updateRequest = new MessagePayload("Get RFID info", 1, "AR System", "Digital Twin", "5 minutes", DateTime.Now, "")
+                    //Show unit test message on tablet screen
+                    textBox.text = unitTestMessage;
 
-            //wait for a message back with JSON
-            var buffer = new byte[1024 * 8];
-            var received = await client.ReceiveAsync(buffer, SocketFlags.None);
-            var responseJSON = Encoding.ASCII.GetString(buffer, 0, received);
+                    //Send unit test message
+                    var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
+                    await client.SendAsync(unitTestMessageBytes, SocketFlags.None);
 
-            //interpret JSON
-            //MessagePayload response = JsonUtility.FromJson<MessagePayload>(responseJSON);
+                    //Wait for a message back with JSON
+                    var bufferUnitTest = new byte[1024 * 8];
+                    var receivedUnitTest = await client.ReceiveAsync(bufferUnitTest, SocketFlags.None);
+                    var responseJSONUnitTest = Encoding.ASCII.GetString(bufferUnitTest, 0, receivedUnitTest);
 
-            //display correct info to text box
-            //For Unit Testing:
-            textBox.text = responseJSON;
+                    //Display full JSON for unit test purposes
+                    textBox.text = responseJSONUnitTest;
 
-            //Normally:
-            //string outputToTextBox = response.payloadJSON;
-            //textBox.text = outputToTextBox;
+                    break;
+
+                case 1:
+                    //Create a message to request the RFID info
+                    MessagePayload rfidRequest = new MessagePayload("Get RFID info", 1, "AR System",
+                        "Digital Twin", "5 minutes", DateTime.Now.ToString(), "Request Pallet IDs", "");
+                    string rfidRequestMessage = JsonUtility.ToJson(rfidRequest);
+
+                    //Display message of progress to user
+                    textBox.text = "Requesting RFID data...";
+
+                    //Send request
+                    var rfidRequestMessageBytes = Encoding.ASCII.GetBytes(rfidRequestMessage);
+                    await client.SendAsync(rfidRequestMessageBytes, SocketFlags.None);
+
+                    //Wait for response message back
+                    var buffer = new byte[1024 * 8];
+                    var received = await client.ReceiveAsync(buffer, SocketFlags.None);
+                    var response = Encoding.ASCII.GetString(buffer, 0, received);
+
+                    //Display payload to user
+                    MessagePayload responseDeserialized = JsonUtility.FromJson<MessagePayload>(response);
+                    string outputToTextBox = responseDeserialized.payloadJSON;
+                    textBox.text = outputToTextBox;
+
+                    break;
+
+                default:
+                    break;
+            }         
         }
     }
 
@@ -152,11 +182,12 @@ public class ARClient : MonoBehaviour
         //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
 
         //For tablet:
-        string ip = "10.66.178.171";
-        //string ip = "192.168.1.38";
+        //string ip = "10.66.178.171";      //Eduroam testing with DT on laptop
+        //string ip = "192.168.1.38";       //DT at home
+        string ip = "146.232.146.236";      //Lab DT on VR lab computer
         IPAddress ipAddressClient = IPAddress.Parse(ip);
 
-        int portClient = 7474;
+        int portClient = 47474;
         
 
         IPEndPoint ipEndPoint = new IPEndPoint(ipAddressClient, portClient);
@@ -164,7 +195,7 @@ public class ARClient : MonoBehaviour
         client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
         //For debugging:
-        textBox.text = "Client created";
+        textBox.text = "Client created, Endpoint: " + ipEndPoint;
 
         await client.ConnectAsync(ipAddressClient, portClient);
 

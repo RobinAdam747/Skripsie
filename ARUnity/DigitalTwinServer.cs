@@ -48,14 +48,15 @@ namespace ARUnity
 
                     //For tablet:
                     //(listening on the ip that they should speak on, check ipconfig each time location/wifi changes)
-                    string ip = "10.66.178.171";
+                    //string ip = "10.66.178.171";
                     //string ip = "192.168.1.38";
+                    string ip = "146.232.146.236";
                     IPAddress ipAddress = IPAddress.Parse(ip);
                     //IPAddress ipAddress = IPAddress.Any;
 
-                    int port = 7474;                  // Choose a port number
+                    int port = 47474;                  // Choose a port number
 
-                    serverAddressTextBox.Text = ipAddress + ":7474";
+                    serverAddressTextBox.Text = ipAddress + ":" + port;
 
                     listener = new TcpListener(ipAddress, port);
                     listener.Start();

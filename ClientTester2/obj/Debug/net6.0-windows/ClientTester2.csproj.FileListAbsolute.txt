@@ -1,4 +1,3 @@
-C:\Users\adams\Documents\Skripsie\ClientTester2\obj\Debug\net6.0-windows\ClientTester2.csproj.AssemblyReference.cache
 C:\Users\adams\Documents\Skripsie\ClientTester2\obj\Debug\net6.0-windows\ClientTester2.Form1.resources
 C:\Users\adams\Documents\Skripsie\ClientTester2\obj\Debug\net6.0-windows\ClientTester2.csproj.GenerateResource.cache
 C:\Users\adams\Documents\Skripsie\ClientTester2\obj\Debug\net6.0-windows\ClientTester2.GeneratedMSBuildEditorConfig.editorconfig

@@ -1,6 +1,7 @@
 using System.Net.Sockets;
 using System.Net;
 using System.Text;
+using System.Data;
 
 namespace ClientTester2
 {
@@ -22,41 +23,53 @@ namespace ClientTester2
         private async void ConnectToServer()
         {
             //Get the local IP address of the laptop wherever you work
-            IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
-            IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
-            int portClient = 7474;
+            //IPHostEntry ipHostInfoClient = Dns.GetHostEntry("localhost");
+            //IPAddress ipAddressClient = ipHostInfoClient.AddressList[0];
 
-            IPEndPoint ipEndPoint = new IPEndPoint(ipAddressClient, portClient);
-
-            Socket client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-            await client.ConnectAsync(ipAddressClient, portClient);
-
-            isConnected = client.Connected;
-
-            while (isConnected)
+            try
             {
-                // Send test message
-                var message = "I am a client that has connected <|EOM|>";
-                var messageBytes = Encoding.ASCII.GetBytes(message);
-                _ = await client.SendAsync(messageBytes, SocketFlags.None);
-                //Debug.Log($"Socket client sent message: \"{message}\"");
-                //Console.WriteLine($"Socket client sent message: \"{message}\"");
-                UpdateStatus($"Socket client sent message: \"{message}\"");
+                string ip = "146.232.146.236";
+                IPAddress ipAddressClient = IPAddress.Parse(ip);
+                int portClient = 47474;
 
-                // Receive acknoledgement
-                var buffer = new byte[1024];
-                var received = await client.ReceiveAsync(buffer, SocketFlags.None);
-                var response = Encoding.ASCII.GetString(buffer, 0, received);
+                IPEndPoint ipEndPoint = new IPEndPoint(ipAddressClient, portClient);
 
-                if (response == "<|ACK|>")
+                Socket client = new(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+                await client.ConnectAsync(ipAddressClient, portClient);
+
+                isConnected = client.Connected;
+
+                while (isConnected)
                 {
-                    //Debug.Log($"Socket client received acknowledgment: \"{response}\"");
-                    //Console.WriteLine($"Socket client received acknowledgment: \"{response}\"");
-                    UpdateStatus($"Socket client received acknowledgment: \"{response}\"");
-                    break;
+                    // Send test message
+                    var message = "I am a client that has connected <|EOM|>";
+                    var messageBytes = Encoding.ASCII.GetBytes(message);
+                    _ = await client.SendAsync(messageBytes, SocketFlags.None);
+                    //Debug.Log($"Socket client sent message: \"{message}\"");
+                    //Console.WriteLine($"Socket client sent message: \"{message}\"");
+                    UpdateStatus($"Socket client sent message: \"{message}\"");
+
+                    // Receive acknoledgement
+                    var buffer = new byte[1024];
+                    var received = await client.ReceiveAsync(buffer, SocketFlags.None);
+                    var response = Encoding.ASCII.GetString(buffer, 0, received);
+
+                    if (response == "<|ACK|>")
+                    {
+                        //Debug.Log($"Socket client received acknowledgment: \"{response}\"");
+                        //Console.WriteLine($"Socket client received acknowledgment: \"{response}\"");
+                        UpdateStatus($"Socket client received acknowledgment: \"{response}\"");
+                        break;
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                UpdateStatus("Error connecting to server: " + ex.Message);
+            }
+
+            
 
 
         }
