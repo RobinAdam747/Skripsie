@@ -149,6 +149,7 @@ namespace ARUnity
                     //Interpret communication from PLC
                     else if (messageReceived.IndexOf("PLC:") > -1)
                     {
+                        //Currently the data received from the PLC is just a string, but logic can be added here to receive the data as a JSON and deserialize it
                         plcData = messageReceived;
                     }
                     else
