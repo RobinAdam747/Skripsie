@@ -92,7 +92,7 @@ public class ARClient : MonoBehaviour
     async void SendDisconnectMessage()
     {
         var disconnectMessage = "<|EOC|>";  //EOC: end of connection
-        var messageBytes = Encoding.ASCII.GetBytes(disconnectMessage);
+        var messageBytes = Encoding.UTF8.GetBytes(disconnectMessage);
         await client.SendAsync(messageBytes, SocketFlags.None);
 
         textBox.text = "Disconnected";
@@ -152,13 +152,13 @@ public class ARClient : MonoBehaviour
         textBox.text = unitTestMessage;
 
         //Send unit test message
-        var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
+        var unitTestMessageBytes = Encoding.UTF8.GetBytes(unitTestMessage);
         await client.SendAsync(unitTestMessageBytes, SocketFlags.None);
 
         //Wait for a message back with JSON
         var bufferUnitTest = new byte[1024 * 8];
         var receivedUnitTest = await client.ReceiveAsync(bufferUnitTest, SocketFlags.None);
-        var responseJSONUnitTest = Encoding.ASCII.GetString(bufferUnitTest, 0, receivedUnitTest);
+        var responseJSONUnitTest = Encoding.UTF8.GetString(bufferUnitTest, 0, receivedUnitTest);
 
         //Display full JSON for unit test purposes
         textBox.text = responseJSONUnitTest;
@@ -176,13 +176,13 @@ public class ARClient : MonoBehaviour
         textBox.text = progressUpdate;
 
         //Send request
-        var messagetoDTStringBytes = Encoding.ASCII.GetBytes(messageToDTString);
+        var messagetoDTStringBytes = Encoding.UTF8.GetBytes(messageToDTString);
         await client.SendAsync(messagetoDTStringBytes, SocketFlags.None);
 
         //Wait for response message back
         var buffer = new byte[1024 * 8];
         var received = await client.ReceiveAsync(buffer, SocketFlags.None);
-        var response = Encoding.ASCII.GetString(buffer, 0, received);
+        var response = Encoding.UTF8.GetString(buffer, 0, received);
 
         //Display payload to user
         MessagePayload responseDeserialized = JsonUtility.FromJson<MessagePayload>(response);
@@ -227,7 +227,7 @@ public class ARClient : MonoBehaviour
         {
             // Send test message
             var message = "I am a client that has connected <|EOM|>";
-            var messageBytes = Encoding.ASCII.GetBytes(message);
+            var messageBytes = Encoding.UTF8.GetBytes(message);
             await client.SendAsync(messageBytes, SocketFlags.None);
             //Debug.Log($"Socket client sent message: \"{message}\"");
             textBox.text = $"Socket client sent message: \"{message}\"\n";
@@ -237,7 +237,7 @@ public class ARClient : MonoBehaviour
             // Receive acknoledgement
             var buffer = new byte[1024];
             var received = await client.ReceiveAsync(buffer, SocketFlags.None);
-            var response = Encoding.ASCII.GetString(buffer, 0, received);
+            var response = Encoding.UTF8.GetString(buffer, 0, received);
 
             if (response == "<|ACK|>")
             {
