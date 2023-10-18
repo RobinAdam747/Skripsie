@@ -105,7 +105,7 @@ public class ARClient : MonoBehaviour
         DisconnectFromServer();
     }
 
-    async void UpdateButtonClick()
+    void UpdateButtonClick()
     {
         //Debug.Log("ButtonUpdate clicked!");
 
@@ -114,65 +114,80 @@ public class ARClient : MonoBehaviour
             //clear textbox:
             textBox.text = "";
 
-            // Operation mode: 0 for unit testing, 1 for regular operation
+            // Operation mode: 0 for unit testing, 1 for regular operation, 2 for full system integration test
             int mode = 0;
 
             switch (mode)
             {
                 case 0:
                     // Unit testing:
-
-                    //Create unit test message
-                    MessagePayload unitTest = new();
-                    unitTest = unitTest.CreateUnitTest(unitTest);
-                    string unitTestMessage = JsonUtility.ToJson(unitTest);
-
-                    //Show unit test message on tablet screen
-                    textBox.text = unitTestMessage;
-
-                    //Send unit test message
-                    var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
-                    await client.SendAsync(unitTestMessageBytes, SocketFlags.None);
-
-                    //Wait for a message back with JSON
-                    var bufferUnitTest = new byte[1024 * 8];
-                    var receivedUnitTest = await client.ReceiveAsync(bufferUnitTest, SocketFlags.None);
-                    var responseJSONUnitTest = Encoding.ASCII.GetString(bufferUnitTest, 0, receivedUnitTest);
-
-                    //Display full JSON for unit test purposes
-                    textBox.text = responseJSONUnitTest;
+                    SendUnitTestMessage();
 
                     break;
 
                 case 1:
-                    //Create a message to request the RFID info
-                    MessagePayload rfidRequest = new MessagePayload("Get RFID info", 1, "AR System",
-                        "Digital Twin", "5 minutes", DateTime.Now.ToString(), "Request Pallet IDs", "");
-                    string rfidRequestMessage = JsonUtility.ToJson(rfidRequest);
-
-                    //Display message of progress to user
-                    textBox.text = "Requesting RFID data...";
-
-                    //Send request
-                    var rfidRequestMessageBytes = Encoding.ASCII.GetBytes(rfidRequestMessage);
-                    await client.SendAsync(rfidRequestMessageBytes, SocketFlags.None);
-
-                    //Wait for response message back
-                    var buffer = new byte[1024 * 8];
-                    var received = await client.ReceiveAsync(buffer, SocketFlags.None);
-                    var response = Encoding.ASCII.GetString(buffer, 0, received);
-
-                    //Display payload to user
-                    MessagePayload responseDeserialized = JsonUtility.FromJson<MessagePayload>(response);
-                    string outputToTextBox = responseDeserialized.payloadJSON;
-                    textBox.text = outputToTextBox;
+                    SendDigitalTwinMessage("Request RFID Data", "RFID Data Exchange", "Fetching RFID data...");
 
                     break;
+                case 2:
+                    SendDigitalTwinMessage("Integration Test", "Full System Integration Test"
+                        , "Beginning full system integration test...");
+                    break;                  
 
                 default:
                     break;
             }         
         }
+    }
+
+    async void SendUnitTestMessage()
+    {
+
+        //Create unit test message
+        MessagePayload unitTest = new();
+        unitTest = unitTest.CreateUnitTest(unitTest);
+        string unitTestMessage = JsonUtility.ToJson(unitTest);
+
+        //Show unit test message on tablet screen
+        textBox.text = unitTestMessage;
+
+        //Send unit test message
+        var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
+        await client.SendAsync(unitTestMessageBytes, SocketFlags.None);
+
+        //Wait for a message back with JSON
+        var bufferUnitTest = new byte[1024 * 8];
+        var receivedUnitTest = await client.ReceiveAsync(bufferUnitTest, SocketFlags.None);
+        var responseJSONUnitTest = Encoding.ASCII.GetString(bufferUnitTest, 0, receivedUnitTest);
+
+        //Display full JSON for unit test purposes
+        textBox.text = responseJSONUnitTest;
+    }
+
+    async void SendDigitalTwinMessage(string requestType, string conversationID, string progressUpdate)
+    {
+        //Create a message to request the RFID info
+        MessagePayload messageToDT = new MessagePayload(conversationID_: conversationID, versionNumber_: 1, sourceID_: "AR System",
+            destinationID_: "Digital Twin", expiry_: "5 minutes", sendTime_: DateTime.Now.ToString(), 
+            requestType_: requestType, payloadJSON_: "");
+        string messageToDTString = JsonUtility.ToJson(messageToDT);
+
+        //Display message of progress to user
+        textBox.text = progressUpdate;
+
+        //Send request
+        var messagetoDTStringBytes = Encoding.ASCII.GetBytes(messageToDTString);
+        await client.SendAsync(messagetoDTStringBytes, SocketFlags.None);
+
+        //Wait for response message back
+        var buffer = new byte[1024 * 8];
+        var received = await client.ReceiveAsync(buffer, SocketFlags.None);
+        var response = Encoding.ASCII.GetString(buffer, 0, received);
+
+        //Display payload to user
+        MessagePayload responseDeserialized = JsonUtility.FromJson<MessagePayload>(response);
+        string outputToTextBox = responseDeserialized.payloadJSON;
+        textBox.text = outputToTextBox;
     }
 
     async void ConnectToServer()
@@ -285,7 +300,7 @@ public class ARClient : MonoBehaviour
 
 
                 break;
-            case "Request Pallet IDs":
+            case "Request RFID Data":
                 //interact with code that receives pallet info from PLC
 
                 break;
