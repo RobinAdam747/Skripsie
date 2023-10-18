@@ -12,6 +12,7 @@ namespace ARUnity
         private bool isRunning { get; set; }                     //boolean set when server is set to be up and running
         private TcpListener? listener { get; set; }              //listener to listen for connection requests and IPs
         private bool isClientConnected { get; set; }             //boolean for when a client is connected
+        private string plcData {  get; set; }                    //data received from the plc
 
         /// <summary>
         /// Parameterised constructor
@@ -145,11 +146,16 @@ namespace ARUnity
                         clientsList.Items.Remove(socket.RemoteEndPoint);
                         break;
                     }
+                    //Interpret communication from PLC
+                    else if (messageReceived.IndexOf("PLC:") > -1)
+                    {
+                        plcData = messageReceived;
+                    }
                     else
                     {
                         InterpretJSONStringServerside(messageReceived, textBox, socket);
                     }
-
+                    
                 }
                 //stream.Close();
                 //client.Close();
@@ -203,6 +209,26 @@ namespace ARUnity
             UpdateStatus("Message sent to " + unitTest.destinationID + " : " + unitTestMessage, textBox);
         }
 
+        public async void SendMessageToARSystem(Socket socket, System.Windows.Forms.TextBox textBox, string requestType, string conversationID)
+        {
+            //compose a message with the requested payload and send back
+            MessagePayload plcMessage = new MessagePayload(conversationID_: conversationID, versionNumber_: 1, sourceID_: "Digital Twin", destinationID_:
+                "AR System", expiry_: "5 minutes", sendTime_: DateTime.Now.ToString(), requestType_: requestType, payloadJSON_: plcData);
+
+            //Serialize for sending
+            string messageToARSystem = JsonSerializer.Serialize(plcMessage);
+
+            //Encode for sending
+            var messageToARSystemBytes = Encoding.ASCII.GetBytes(messageToARSystem);
+
+            //Send
+            await socket.SendAsync(messageToARSystemBytes, SocketFlags.None);
+
+            //Display feedback on screen
+            UpdateStatus("Message in conversation " + conversationID + " was sent to AR System at " + DateTime.Now.ToString(), textBox);
+
+        }
+
         /// <summary>
         /// Sends a message to a windows forms text box.
         /// </summary>
@@ -233,17 +259,7 @@ namespace ARUnity
         /// <param name="textBox"></param>
         public void InterpretJSONStringServerside(string jsonString, System.Windows.Forms.TextBox textBox, Socket socket)
         {
-            MessagePayload? payload = new MessagePayload(
-                conversationID_: "",
-                versionNumber_: 0,
-                sourceID_: "",
-                destinationID_: "",
-                expiry_: "",
-                sendTime_: DateTime.MinValue.ToString(),
-                requestType_: "",
-                payloadJSON_: "");
-
-            //payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
+            MessagePayload? payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
 
             //logic to interpret deserialized JSON message
             switch (payload?.requestType)
@@ -252,8 +268,11 @@ namespace ARUnity
                     UpdateStatus(jsonString + "\n", textBox);
                     SendUnitTest(socket, textBox);
                     break;
-                case "Request Pallet IDs":
-                    //interact with code that receives pallet info from PLC
+                case "Request RFID Data":
+                    SendMessageToARSystem(socket, textBox, "Request RFID Data", "RFID Data Exchange");                  
+                    break;
+                case "Integration Test":
+                    SendMessageToARSystem(socket, textBox, "Integration Test", "Full System Integration Test");
 
                     break;
                 default:

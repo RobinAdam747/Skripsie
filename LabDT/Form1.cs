@@ -56,8 +56,8 @@ namespace LabDT
         */
 
 
-        
-              
+
+
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -79,7 +79,7 @@ namespace LabDT
         {
             //dtServer?.SendUnitTest(dtServer, txtInfo);
 
-            dtServer?.ConnectToServer(txtInfo);
+            //dtServer?.ConnectToServer(txtInfo);
         }
     }
 }

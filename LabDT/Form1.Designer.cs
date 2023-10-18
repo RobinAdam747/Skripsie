@@ -35,23 +35,24 @@
             txtInfo = new TextBox();
             lblServer = new Label();
             lblClients = new Label();
-            btnUnitTest = new Button();
             SuspendLayout();
             // 
             // lstClients
             // 
             lstClients.FormattingEnabled = true;
-            lstClients.ItemHeight = 20;
-            lstClients.Location = new Point(676, 79);
+            lstClients.ItemHeight = 15;
+            lstClients.Location = new Point(592, 59);
+            lstClients.Margin = new Padding(3, 2, 3, 2);
             lstClients.Name = "lstClients";
-            lstClients.Size = new Size(357, 484);
+            lstClients.Size = new Size(313, 364);
             lstClients.TabIndex = 0;
             // 
             // btnStop
             // 
-            btnStop.Location = new Point(530, 608);
+            btnStop.Location = new Point(464, 456);
+            btnStop.Margin = new Padding(3, 2, 3, 2);
             btnStop.Name = "btnStop";
-            btnStop.Size = new Size(94, 29);
+            btnStop.Size = new Size(82, 22);
             btnStop.TabIndex = 1;
             btnStop.Text = "Stop";
             btnStop.UseVisualStyleBackColor = true;
@@ -59,9 +60,10 @@
             // 
             // btnStart
             // 
-            btnStart.Location = new Point(530, 573);
+            btnStart.Location = new Point(464, 430);
+            btnStart.Margin = new Padding(3, 2, 3, 2);
             btnStart.Name = "btnStart";
-            btnStart.Size = new Size(94, 29);
+            btnStart.Size = new Size(82, 22);
             btnStart.TabIndex = 2;
             btnStart.Text = "Start";
             btnStart.UseVisualStyleBackColor = true;
@@ -69,27 +71,29 @@
             // 
             // txtServerAddress
             // 
-            txtServerAddress.Location = new Point(123, 79);
+            txtServerAddress.Location = new Point(108, 59);
+            txtServerAddress.Margin = new Padding(3, 2, 3, 2);
             txtServerAddress.Name = "txtServerAddress";
-            txtServerAddress.Size = new Size(501, 27);
+            txtServerAddress.Size = new Size(439, 23);
             txtServerAddress.TabIndex = 3;
             // 
             // txtInfo
             // 
-            txtInfo.Location = new Point(123, 123);
+            txtInfo.Location = new Point(108, 92);
+            txtInfo.Margin = new Padding(3, 2, 3, 2);
             txtInfo.Multiline = true;
             txtInfo.Name = "txtInfo";
             txtInfo.ReadOnly = true;
             txtInfo.ScrollBars = ScrollBars.Vertical;
-            txtInfo.Size = new Size(501, 440);
+            txtInfo.Size = new Size(439, 331);
             txtInfo.TabIndex = 4;
             // 
             // lblServer
             // 
             lblServer.AutoSize = true;
-            lblServer.Location = new Point(49, 86);
+            lblServer.Location = new Point(43, 64);
             lblServer.Name = "lblServer";
-            lblServer.Size = new Size(53, 20);
+            lblServer.Size = new Size(42, 15);
             lblServer.TabIndex = 5;
             lblServer.Text = "Server:";
             lblServer.Click += label1_Click;
@@ -97,28 +101,17 @@
             // lblClients
             // 
             lblClients.AutoSize = true;
-            lblClients.Location = new Point(676, 56);
+            lblClients.Location = new Point(592, 42);
             lblClients.Name = "lblClients";
-            lblClients.Size = new Size(56, 20);
+            lblClients.Size = new Size(46, 15);
             lblClients.TabIndex = 6;
             lblClients.Text = "Clients:";
             // 
-            // btnUnitTest
-            // 
-            btnUnitTest.Location = new Point(123, 573);
-            btnUnitTest.Name = "btnUnitTest";
-            btnUnitTest.Size = new Size(94, 29);
-            btnUnitTest.TabIndex = 7;
-            btnUnitTest.Text = "Unit Test";
-            btnUnitTest.UseVisualStyleBackColor = true;
-            btnUnitTest.Click += btnUnitTest_Click;
-            // 
             // LabDT
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1060, 642);
-            Controls.Add(btnUnitTest);
+            ClientSize = new Size(928, 482);
             Controls.Add(lblClients);
             Controls.Add(lblServer);
             Controls.Add(txtInfo);
@@ -126,6 +119,7 @@
             Controls.Add(btnStart);
             Controls.Add(btnStop);
             Controls.Add(lstClients);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "LabDT";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Lab Digital Twin";
@@ -142,6 +136,5 @@
         private TextBox txtInfo;
         private Label lblServer;
         private Label lblClients;
-        private Button btnUnitTest;
     }
 }
