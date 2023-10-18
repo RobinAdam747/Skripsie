@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Runtime.ExceptionServices;
 //using LabDT;
 
 namespace ARUnity
@@ -51,7 +52,7 @@ namespace ARUnity
                     //(listening on the ip that they should speak on, check ipconfig each time location/wifi changes)
                     //string ip = "10.66.178.171";
                     //string ip = "192.168.1.38";
-                    string ip = "146.232.146.236";
+                    string ip = "146.232.145.241";
                     IPAddress ipAddress = IPAddress.Parse(ip);
                     //IPAddress ipAddress = IPAddress.Any;
 
@@ -114,7 +115,7 @@ namespace ARUnity
                 while (isRunning && isClientConnected)
                 {
                     var bytesRead = await socket.ReceiveAsync(data, SocketFlags.None);
-                    string messageReceived = Encoding.ASCII.GetString(data, 0, bytesRead);
+                    string messageReceived = Encoding.UTF8.GetString(data, 0, bytesRead);
                     UpdateStatus("Received from client: " + messageReceived, textBox);
 
                     var eom = "<|EOM|>";
@@ -124,13 +125,14 @@ namespace ARUnity
                         UpdateStatus($"Socket server received message: \"{messageReceived.Replace(eom, "")}\"", textBox);
 
                         var ackMessage = "<|ACK|>";
-                        var echoBytes = Encoding.ASCII.GetBytes(ackMessage);
+                        var echoBytes = Encoding.UTF8.GetBytes(ackMessage);
                         await socket.SendAsync(echoBytes, 0);
                         //Console.WriteLine($"Socket server sent acknowledgment: \"{ackMessage}\"");
                         UpdateStatus($"Socket server sent acknowledgment: \"{ackMessage}\"", textBox);
 
                         //isRunning = false;  //temporary fix... (disconnecting after handshake)
                     }
+                    //Disconnect logic:
                     else if (messageReceived.Equals("<|EOC|>"))
                     {
                         isClientConnected = false;
@@ -138,6 +140,7 @@ namespace ARUnity
                         UpdateStatus("Client disconnected: " + socket.RemoteEndPoint, textBox);
                         clientsList.Items.Remove(socket.RemoteEndPoint);
                     }
+                    //If the AR app sends a blank when the app on the tablet is exited, prevents infinite loop glitch of DT
                     else if (messageReceived.Equals(""))
                     {
                         isClientConnected = false;
@@ -146,7 +149,7 @@ namespace ARUnity
                         clientsList.Items.Remove(socket.RemoteEndPoint);
                         break;
                     }
-                    //Interpret communication from PLC
+                    //Handling messages from the PLC:
                     else if (messageReceived.IndexOf("PLC:") > -1)
                     {
                         //Currently the data received from the PLC is just a string, but logic can be added here to receive the data as a JSON and deserialize it
@@ -158,10 +161,7 @@ namespace ARUnity
                     }
                     
                 }
-                //stream.Close();
-                //client.Close();
-                //socket.Close();
-
+                
             }
             catch (Exception ex)
             {
@@ -201,7 +201,7 @@ namespace ARUnity
             string unitTestMessage = JsonSerializer.Serialize(unitTest);
 
             //Encode for sending
-            var unitTestMessageBytes = Encoding.ASCII.GetBytes(unitTestMessage);
+            var unitTestMessageBytes = Encoding.UTF8.GetBytes(unitTestMessage);
 
             //Send
             await socket.SendAsync(unitTestMessageBytes, SocketFlags.None);
@@ -220,7 +220,7 @@ namespace ARUnity
             string messageToARSystem = JsonSerializer.Serialize(plcMessage);
 
             //Encode for sending
-            var messageToARSystemBytes = Encoding.ASCII.GetBytes(messageToARSystem);
+            var messageToARSystemBytes = Encoding.UTF8.GetBytes(messageToARSystem);
 
             //Send
             await socket.SendAsync(messageToARSystemBytes, SocketFlags.None);
@@ -242,12 +242,12 @@ namespace ARUnity
             {
                 textBox.Invoke((MethodInvoker)delegate
                 {
-                    textBox.AppendText(message + Environment.NewLine);
+                    textBox.AppendText(message + Environment.NewLine + Environment.NewLine);
                 });
             }
             else
             {
-                textBox.AppendText(message + Environment.NewLine);
+                textBox.AppendText(message + Environment.NewLine + Environment.NewLine);
             }
 
         }
