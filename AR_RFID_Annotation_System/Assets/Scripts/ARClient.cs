@@ -168,7 +168,7 @@ public class ARClient : MonoBehaviour
     {
         //Create a message to request the RFID info
         MessagePayload messageToDT = new MessagePayload(conversationID_: conversationID, versionNumber_: 1, sourceID_: "AR System",
-            destinationID_: "Digital Twin", expiry_: "5 minutes", sendTime_: DateTime.Now.ToString(), 
+            destinationID_: "Digital Twin", expiry_: "5 minutes", sendTime_: DateTime.Now.ToString(),
             requestType_: requestType, payloadJSON_: "");
         string messageToDTString = JsonUtility.ToJson(messageToDT);
 
@@ -199,7 +199,7 @@ public class ARClient : MonoBehaviour
         //For tablet:
         //string ip = "10.66.178.171";      //Eduroam testing with DT on laptop
         //string ip = "192.168.1.38";       //DT at home
-        string ip = "146.232.146.236";      //Lab DT on VR lab computer
+        string ip = "146.232.145.241";      //Lab DT on VR lab computer
         IPAddress ipAddressClient = IPAddress.Parse(ip);
 
         int portClient = 47474;

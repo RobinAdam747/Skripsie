@@ -34,7 +34,14 @@ namespace ARUnity
         public MessagePayload(string conversationID_, int versionNumber_, string sourceID_, string destinationID_,
             string expiry_, string sendTime_, string requestType_, string payloadJSON_)
         {
-
+            conversationID = conversationID_;
+            versionNumber = versionNumber_;
+            sourceID = sourceID_;
+            destinationID = destinationID_;
+            expiry = expiry_;
+            sendTime = sendTime_;
+            requestType = requestType_;
+            payloadJSON = payloadJSON_;
         }
 
         public MessagePayload()
