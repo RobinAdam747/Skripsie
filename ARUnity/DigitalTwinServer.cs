@@ -147,7 +147,6 @@ namespace ARUnity
                         socket.Shutdown(SocketShutdown.Both);
                         UpdateStatus("Client disconnected: " + socket.RemoteEndPoint, textBox);
                         clientsList.Items.Remove(socket.RemoteEndPoint);
-                        break;
                     }
                     //Handling messages from the PLC:
                     else if (messageReceived.IndexOf("PLC:") > -1)
@@ -230,6 +229,18 @@ namespace ARUnity
 
         }
 
+        public async void RequestDataFromPlc(string messageRequest, Socket socket, System.Windows.Forms.TextBox textBox)
+        {
+            //Encode message
+            var messageRequestEncoded = Encoding.UTF8.GetBytes(messageRequest);
+
+            //Send
+            await socket.SendAsync(messageRequestEncoded, SocketFlags.None);
+
+            //Display feedback on screen
+            UpdateStatus("Data from PLC requested", textBox);
+        }
+
         /// <summary>
         /// Sends a message to a windows forms text box.
         /// </summary>
@@ -258,23 +269,28 @@ namespace ARUnity
         /// </summary>
         /// <param name="jsonString"></param>
         /// <param name="textBox"></param>
+        /// <param name="socket"></param>
         public void InterpretJSONStringServerside(string jsonString, System.Windows.Forms.TextBox textBox, Socket socket)
         {
-            MessagePayload? payload = JsonSerializer.Deserialize<MessagePayload>(jsonString);
+            MessagePayload? message = JsonSerializer.Deserialize<MessagePayload>(jsonString);
 
             //logic to interpret deserialized JSON message
-            switch (payload?.requestType)
+            switch (message?.requestType)
             {
                 case "Unit Test":
                     UpdateStatus(jsonString + "\n", textBox);
                     SendUnitTest(socket, textBox);
                     break;
                 case "Request RFID Data":
-                    SendMessageToARSystem(socket, textBox, "Request RFID Data", "RFID Data Exchange");                  
+                    //RequestDataFromPlc("Request RFID data", socket, textBox);
+                    SendMessageToARSystem(socket, textBox, "Request RFID Data", "RFID Data Exchange");
                     break;
                 case "Integration Test":
-                    SendMessageToARSystem(socket, textBox, "Integration Test", "Full System Integration Test");
+                    //RequestDataFromPlc("PLC Greeting", socket, textBox);
 
+                    UpdateStatus("Beginning Integration Test", textBox);
+
+                    SendMessageToARSystem(socket, textBox, "Integration Test", "Full System Integration Test");
                     break;
                 default:
                     break;
