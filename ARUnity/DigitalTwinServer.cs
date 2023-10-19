@@ -13,7 +13,7 @@ namespace ARUnity
         private bool isRunning { get; set; }                     //boolean set when server is set to be up and running
         private TcpListener? listener { get; set; }              //listener to listen for connection requests and IPs
         private bool isClientConnected { get; set; }             //boolean for when a client is connected
-        private string? plcData {  get; set; }                    //data received from the plc
+        private string? plcData { get; set; }                    //data received from the plc
 
         /// <summary>
         /// Parameterised constructor
@@ -153,6 +153,7 @@ namespace ARUnity
                     {
                         //Currently the data received from the PLC is just a string, but logic can be added here to receive the data as a JSON and deserialize it
                         plcData = messageReceived;
+                        UpdateStatus("", textBox);  //newline in textbox
                     }
                     else
                     {
