@@ -156,7 +156,7 @@ public class ARClient : MonoBehaviour
         await client.SendAsync(unitTestMessageBytes, SocketFlags.None);
 
         //Wait for a message back with JSON
-        var bufferUnitTest = new byte[1024 * 8];
+        var bufferUnitTest = new byte[1024];
         var receivedUnitTest = await client.ReceiveAsync(bufferUnitTest, SocketFlags.None);
         var responseJSONUnitTest = Encoding.UTF8.GetString(bufferUnitTest, 0, receivedUnitTest);
 
@@ -180,7 +180,7 @@ public class ARClient : MonoBehaviour
         await client.SendAsync(messagetoDTStringBytes, SocketFlags.None);
 
         //Wait for response message back
-        var buffer = new byte[1024 * 8];
+        var buffer = new byte[1024];
         var received = await client.ReceiveAsync(buffer, SocketFlags.None);
         var response = Encoding.UTF8.GetString(buffer, 0, received);
 
