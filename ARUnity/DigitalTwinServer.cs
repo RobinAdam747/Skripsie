@@ -13,7 +13,7 @@ namespace ARUnity
         private bool isRunning { get; set; }                     //boolean set when server is set to be up and running
         private TcpListener? listener { get; set; }              //listener to listen for connection requests and IPs
         private bool isClientConnected { get; set; }             //boolean for when a client is connected
-        private string plcData {  get; set; }                    //data received from the plc
+        private string? plcData {  get; set; }                    //data received from the plc
 
         /// <summary>
         /// Parameterised constructor
@@ -209,6 +209,13 @@ namespace ARUnity
             UpdateStatus("Message sent to " + unitTest.destinationID + " : " + unitTestMessage, textBox);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="textBox"></param>
+        /// <param name="requestType"></param>
+        /// <param name="conversationID"></param>
         public async void SendMessageToARSystem(Socket socket, System.Windows.Forms.TextBox textBox, string requestType, string conversationID)
         {
             //compose a message with the requested payload and send back
