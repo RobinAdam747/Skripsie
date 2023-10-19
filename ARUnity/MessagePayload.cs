@@ -11,14 +11,14 @@ namespace ARUnity
     public class MessagePayload
     {
         // Variables (Attributes):
-        public string? conversationID;
-        public int versionNumber;
-        public string? sourceID;
-        public string? destinationID;
-        public string? expiry;
-        public string? sendTime;
-        public string? requestType;
-        public string? payloadJSON;   
+        public string? conversationID {  get; set; }
+        public int versionNumber { get; set; }
+        public string? sourceID { get; set; }
+        public string? destinationID { get; set; }
+        public string? expiry { get; set; }
+        public string? sendTime { get; set; }
+        public string? requestType { get; set; }
+        public string? payloadJSON { get; set; }
 
         /// <summary>
         /// Parameterised constructor
