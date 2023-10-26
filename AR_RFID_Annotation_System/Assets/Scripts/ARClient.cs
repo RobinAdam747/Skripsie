@@ -22,16 +22,12 @@ public class ARClient : MonoBehaviour
     public Button btnConnect;
     public Button btnDisconnect;
     public Button btnUpdate;
-    //private int port = 7474;
     private Socket client;
-    //ARTrackedImageManager imageManager;
     public ARTrackedImage scannedMarker;
 
     // Start is called before the first frame update
     void Start()
     {
-        //ConnectToServer();
-
         //Add listeners to listen for button clicks and activate the relative functions
         btnConnect.onClick.AddListener(ConnectButtonClick);
         btnDisconnect.onClick.AddListener(DisconnectButtonClick);
@@ -53,11 +49,6 @@ public class ARClient : MonoBehaviour
         GameObject textBoxObject = GameObject.FindGameObjectWithTag("annotationText");
         textBox = textBoxObject.GetComponent<TMPro.TextMeshProUGUI>();
         
-
-        //Make sure annotation always faces user:
-        //Camera camera = Camera.main;
-        //annotation.transform.LookAt(transform.position + camera.transform.rotation * Vector3.forward, camera.transform.rotation * Vector3.up);
-
         //Buttons code:
         //If the annotation game object has spawned, then activate the buttons:
         if (annotation.activeSelf)
@@ -82,11 +73,7 @@ public class ARClient : MonoBehaviour
 
     void ConnectButtonClick()
     {
-
         ConnectToServer();
-        //Debug.Log("ButtonConnect clicked!");
-
-        //textBox.text = "ButtonConnect clicked!";
     }
 
     async void SendDisconnectMessage()
@@ -100,15 +87,11 @@ public class ARClient : MonoBehaviour
 
     void DisconnectButtonClick()
     {
-        //Debug.Log("ButtonDisconnect clicked!");
-
         DisconnectFromServer();
     }
 
     void UpdateButtonClick()
     {
-        //Debug.Log("ButtonUpdate clicked!");
-
         if (isConnected)
         {
             //clear textbox:
@@ -126,12 +109,14 @@ public class ARClient : MonoBehaviour
                     break;
 
                 case 1:
+                    // Normal operation:
                     SendandReceiveDigitalTwinMessage("Request RFID Data", "RFID Data Exchange", "Fetching RFID data...");
 
                     break;
                 case 2:
-                    SendandReceiveDigitalTwinMessage("Integration Test", "Full System Integration Test"
-                        , "Beginning full system integration test...");
+                    // Integration testing:
+                    SendandReceiveDigitalTwinMessage("Integration Test", "Full System Integration Test",
+                        "Beginning full system integration test...");
                     break;                  
 
                 default:
@@ -229,10 +214,7 @@ public class ARClient : MonoBehaviour
             var message = "I am a client that has connected <|EOM|>";
             var messageBytes = Encoding.UTF8.GetBytes(message);
             await client.SendAsync(messageBytes, SocketFlags.None);
-            //Debug.Log($"Socket client sent message: \"{message}\"");
             textBox.text = $"Socket client sent message: \"{message}\"\n";
-            //Console.WriteLine($"Socket client sent message: \"{message}\"");
-            //UpdateStatus($"Socket client sent message: \"{message}\"");
 
             // Receive acknoledgement
             var buffer = new byte[1024];
@@ -241,9 +223,6 @@ public class ARClient : MonoBehaviour
 
             if (response == "<|ACK|>")
             {
-                //Debug.Log($"Socket client received acknowledgment: \"{response}\"");
-                //Console.WriteLine($"Socket client received acknowledgment: \"{response}\"");
-                //UpdateStatus($"Socket client received acknowledgment: \"{response}\"");
                 textBox.text += $"Socket client received acknowledgment: \"{response}\"";
                 break;
             }
@@ -261,8 +240,6 @@ public class ARClient : MonoBehaviour
         if (isConnected)
         {
             SendDisconnectMessage();
-
-            //client.Shutdown(SocketShutdown.Both);
             isConnected = false;
         }
     }
@@ -270,43 +247,5 @@ public class ARClient : MonoBehaviour
     void OnApplicationQuit()
     {
         DisconnectFromServer();
-        //client.Shutdown(SocketShutdown.Both);
-        //isConnected = false;
-    }
-
-    /// <summary>
-    /// Interpreting standard JSON string:
-    /// Logic to interpret and decipher a received JSON.
-    /// </summary>
-    /// <param name="jsonString"></param>
-    public void InterpretJSONString(string jsonString)
-    {
-        MessagePayload? payload = new MessagePayload(
-            conversationID_: "",
-            versionNumber_: 0,
-            sourceID_: "",
-            destinationID_: "",
-            expiry_: "",
-            sendTime_: DateTime.MinValue.ToString(),
-            requestType_: "",
-            payloadJSON_: "");
-
-        payload = JsonUtility.FromJson<MessagePayload>(jsonString);
-
-        //logic to interpret deserialized JSON message
-        switch (payload?.requestType)
-        {
-            case "Unit Test":
-
-
-                break;
-            case "Request RFID Data":
-                //interact with code that receives pallet info from PLC
-
-                break;
-            default:
-                break;
-        }
-
     }
 }

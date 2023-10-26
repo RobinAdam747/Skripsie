@@ -66,7 +66,7 @@ public class ImageTracking : MonoBehaviour
         prefab.transform.position = position;
         prefab.SetActive(true);
 
-        //Disable the other prefabs when we look at a new image (might not be applicable, may want them all visible)
+        //Disable the other prefabs when we look at a new image (not applicable if all are to be visible at once)
         foreach (GameObject go in spawnedPrefabs.Values)
         {
             if (go.name != name) 

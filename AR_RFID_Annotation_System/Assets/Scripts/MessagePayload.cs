@@ -21,7 +21,7 @@ namespace ARUnity
         public string? payloadJSON;   
 
         /// <summary>
-        /// Parameterised constructor
+        /// Parameterised constructor.
         /// </summary>
         /// <param name="conversationID_"></param>
         /// <param name="versionNumber_"></param>
@@ -53,8 +53,7 @@ namespace ARUnity
         // Methods //
 
         /// <summary>
-        /// Unit Test:
-        /// A unit test example JSON for testing the JSON deserializing and interpreting methods and functionality
+        /// A unit test JSON for testing the JSON deserializing and interpreting methods and functionality
         /// </summary>
         /// <returns> a MessagePayload type containing the deserialized data </returns>
         public MessagePayload UnitTest()
@@ -72,34 +71,10 @@ namespace ARUnity
             return unitTest;
         }
 
-        public MessagePayload CreateUnitTest(MessagePayload unitTest)
-        {
-            unitTest.conversationID = "Unit Test Conversation";
-            unitTest.versionNumber = 1;
-            unitTest.sourceID = "AR System";
-            unitTest.destinationID = "Digital Twin";
-            unitTest.expiry = "5 minutes";
-            unitTest.sendTime = DateTime.Now.ToString();
-            unitTest.requestType = "Unit Test";
-            unitTest.payloadJSON = "Unit Test Payload";
-
-            return unitTest;
-        }
-
-        public MessagePayload CreateUnitTestReply(MessagePayload unitTestReply)
-        {
-            unitTestReply.conversationID = "Unit Test Conversation";
-            unitTestReply.versionNumber = 1;
-            unitTestReply.sourceID = "Digital Twin";
-            unitTestReply.destinationID = "AR System";
-            unitTestReply.expiry = "5 minutes";
-            unitTestReply.sendTime = DateTime.Now.ToString();
-            unitTestReply.requestType = "Unit Test";
-            unitTestReply.payloadJSON = "Unit Test Payload";
-
-            return unitTestReply;
-        }
-
+        /// <summary>
+        /// A unit test JSON message sent as a reply from the digital twin to the AR system.
+        /// </summary>
+        /// <returns></returns>
         public MessagePayload UnitTestReply()
         {
             MessagePayload unitTest = new MessagePayload(
@@ -113,6 +88,20 @@ namespace ARUnity
                 payloadJSON_: "Unit Test Payload");
 
             return unitTest;
+        }
+
+        public MessagePayload CreateUnitTest(MessagePayload unitTest)
+        {
+            unitTest = UnitTest();
+
+            return unitTest;
+        }
+
+        public MessagePayload CreateUnitTestReply(MessagePayload unitTestReply)
+        {
+            unitTestReply = UnitTestReply();
+
+            return unitTestReply;
         }
     }
 

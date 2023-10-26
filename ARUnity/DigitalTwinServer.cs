@@ -237,17 +237,17 @@ namespace ARUnity
 
         }
 
-        public async void RequestDataFromPlc(string messageRequest, Socket socket, System.Windows.Forms.TextBox textBox)
-        {
-            //Encode message
-            var messageRequestEncoded = Encoding.UTF8.GetBytes(messageRequest);
+        //public async void RequestDataFromPlc(string messageRequest, Socket socket, System.Windows.Forms.TextBox textBox)
+        //{
+        //    //Encode message
+        //    var messageRequestEncoded = Encoding.UTF8.GetBytes(messageRequest);
 
-            //Send
-            await socket.SendAsync(messageRequestEncoded, SocketFlags.None);
+        //    //Send
+        //    await socket.SendAsync(messageRequestEncoded, SocketFlags.None);
 
-            //Display feedback on screen
-            UpdateStatus("Data from PLC requested", textBox);
-        }
+        //    //Display feedback on screen
+        //    UpdateStatus("Data from PLC requested", textBox);
+        //}
 
         /// <summary>
         /// Sends a message to a windows forms text box.
