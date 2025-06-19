@@ -19,6 +19,29 @@
 
 For my final year project (skripsie) at the [Department of Mechanical and Mechatronic Engineering at Stellenbosch University](https://www.mecheng.sun.ac.za), I created an augmented reality annotation system designed for the visualization of RFID data within a Smart Conveyor setup at the [Automation Laboratory](https://sites.google.com/view/mad-research-group/facilities/automation-lab?authuser=0). The system leverages [Unity3D](https://unity.com) and a "digital twin" communication abstraction layer to retrieve and overlay real-time RFID information directly onto physical conveyor objects, enhancing monitoring, diagnostics, and educational experiences.
 
+## System Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant UnityAR as Unity AR Application
+    participant Twin as Digital Twin Abstraction Layer
+    participant PLC as Siemens PLC
+    participant RFIDReader as RFID Reader
+    participant RFIDTag as RFID Tag
+
+    User->>UnityAR: Requests RFID visualization
+    UnityAR->>Twin: Request RFID data
+    Twin->>PLC: Query for tag data
+    PLC->>RFIDReader: Read RFID tags
+    RFIDReader->>RFIDTag: Scan tag
+    RFIDTag-->>RFIDReader: Transmit tag info
+    RFIDReader-->>PLC: Send tag data
+    PLC-->>Twin: Respond with tag data
+    Twin-->>UnityAR: Provide real-time RFID data
+    UnityAR-->>User: Display AR annotations
+```
+
 ## Features
 
 - **Real-Time RFID Data Visualization:** Displays RFID tag data spatially in AR.
