@@ -94,12 +94,11 @@ sequenceDiagram
 ## Repository Structure
 
 ```
-/Assets
-  /Scripts      # C# source code
-  /Shaders      # ShaderLab/HLSL shaders
-  /Scenes       # Unity scenes
-  /Prefabs      # Reusable objects
-/Docs           # Documentation
+/ARUnity                      # C sharp project for the Unity Augmented Reality integration
+/AR_RFID_Annotation_System    # Unity project for the visual output
+/ClientTester                 # C sharp project used in the development process of the socket communications
+/ClientTester2                # " "
+/LabDT                        # Digital twin abstraction layer for the communication between the PLC and the AR system
 ...
 ```
 
