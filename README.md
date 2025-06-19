@@ -97,7 +97,7 @@ sequenceDiagram
 /ARUnity                      # C sharp project for the Unity Augmented Reality integration
 /AR_RFID_Annotation_System    # Unity project for the visual output
 /ClientTester                 # C sharp project used in the development process of the socket communications
-/ClientTester2                # " "
+/ClientTester2                # Another C sharp project used in the development process of the socket communications
 /LabDT                        # Digital twin abstraction layer for the communication between the PLC and the AR system
 ...
 ```
